@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="Guodong">
+  <meta name="keywords" content="">
+  <title>Angular 8: Setup and Binding - Guodong&#39;s Code Journey</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Guodong's Code Journey</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/angular.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2019-08-21 15:02">
+                    August 21, 2019 3:02 PM
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    1k words
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    6
+                     minutes
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  Last updated: November 15, 2020 8:44 PM
+                
+              </p>
+            
+            <article class="markdown-body">
+              <!-- # Angular 8: setup and binding -->
+<p> Angular 8 Demo Project Log and Experience Part 1. </p>
+<p>This is a log for a Angular Demo project. Through this project, it’s a good chance to review the Angular concept and learn deeper.</p>
+<p>This part 1 focus on the basic concept about binding:</p>
+<ul>
+<li>data binding </li>
+<li>event binding</li>
+<li>template binding</li>
+<li>@Input (property binding)</li>
+<li>@Output (event binding)</li>
+</ul>
+<h2 id="Step-1-Create-new-project"><a href="#Step-1-Create-new-project" class="headerlink" title="Step 1: Create new project"></a>Step 1: Create new project</h2><p><code>ng new my-app</code></p>
+<h2 id="Step-2-Init-AppComponent"><a href="#Step-2-Init-AppComponent" class="headerlink" title="Step 2: Init AppComponent"></a>Step 2: Init AppComponent</h2><pre><code class="hljs typescript"><span class="hljs-keyword">interface</span> TopMenu &#123;
+  title: <span class="hljs-built_in">string</span>;
+  readonly link?: <span class="hljs-built_in">string</span>;
+&#125;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> AppComponent &#123;
+  title = <span class="hljs-string">'App title'</span>;
+  menus: TopMenu[] = [&#123; title: <span class="hljs-string">'HOT'</span>, link: <span class="hljs-string">''</span> &#125;, &#123; title: <span class="hljs-string">'TOY'</span>, link: <span class="hljs-string">''</span> &#125;];
+&#125;</code></pre>
+
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">li</span> *<span class="hljs-attr">ngFor</span>=<span class="hljs-string">"let menu of menus"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#"</span>&gt;</span> &#123;&#123;menu.title&#125;&#125; <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span></code></pre>
+
+<p>To let the menus layout as a flat menu, need to use css to config. The main setting is <code>flex-direction</code> and <code>white-space</code>.</p>
+<p>To avoid the scrollbar in the top menus, use <code>::-webkit-scrollbar</code>.</p>
+<pre><code class="hljs css"><span class="hljs-selector-tag">ul</span> &#123;
+  <span class="hljs-attribute">padding</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">margin</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">display</span>: flex;
+  <span class="hljs-attribute">flex-direction</span>: row;
+&#125;
+<span class="hljs-selector-tag">ul</span> <span class="hljs-selector-tag">li</span> &#123;
+  <span class="hljs-attribute">display</span>: inline-block;
+  <span class="hljs-attribute">margin</span>: <span class="hljs-number">0</span> <span class="hljs-number">5px</span>;
+  <span class="hljs-attribute">white-space</span>: nowrap;
+&#125;
+<span class="hljs-selector-tag">a</span> &#123;
+  <span class="hljs-attribute">text-decoration</span>: none;
+&#125;
+<span class="hljs-selector-pseudo">::-webkit-scrollbar</span> &#123;
+  <span class="hljs-attribute">display</span>: none;
+&#125;</code></pre>
+
+<h2 id="Step-3-ngFor-and-ngIf-data-binding-and-event-binding"><a href="#Step-3-ngFor-and-ngIf-data-binding-and-event-binding" class="headerlink" title="Step 3: ngFor and ngIf, data binding and event binding"></a>Step 3: ngFor and ngIf, data binding and event binding</h2><h3 id="ngFor"><a href="#ngFor" class="headerlink" title="*ngFor"></a>*ngFor</h3><ul>
+<li>Syntax: <code>let menu of menus</code></li>
+<li>Get Index: <code>let menu of menus; let i = index</code></li>
+<li>Get First or Last Element: <code>let menu of menus; let first = first; let last = last</code></li>
+<li>Get Even or Odd Elements: <code>let menu of menus; let odd = odd; let even = even</code></li>
+<li>Improve performance: <code>let menu of menus; trackBy: trackElement</code></li>
+<li>Data Binding: [], e.g. <code>[class.active]=&quot;i === selectedIndex&quot;</code></li>
+<li>Event Binding: (), e.g. <code>(click)=&quot;handleSelection(i)&quot;</code></li>
+</ul>
+<h3 id="ngIf"><a href="#ngIf" class="headerlink" title="*ngIf"></a>*ngIf</h3><p>syntax 1:</p>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> *<span class="hljs-attr">ngIf</span>=<span class="hljs-string">"condition"</span>&gt;</span>View exposed when the condition is true.<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
+
+<p>syntax 2:</p>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> *<span class="hljs-attr">ngIf</span>=<span class="hljs-string">"condition else elseContent"</span>&gt;</span>
+  Content exposed when the condition is true.
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">ng-template</span> #<span class="hljs-attr">elseContent</span></span>
+<span class="hljs-tag">  &gt;</span>Content exposed when the condition is false.<span class="hljs-tag">&lt;/<span class="hljs-name">ng-template</span></span>
+<span class="hljs-tag">&gt;</span></code></pre>
+
+<p>syntax 3:</p>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> *<span class="hljs-attr">ngIf</span>=<span class="hljs-string">"condition; then thenTemplate; else elseContent"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">ng-template</span> #<span class="hljs-attr">thenContent</span></span>
+<span class="hljs-tag">  &gt;</span>Content exposed when the condition is true.<span class="hljs-tag">&lt;/<span class="hljs-name">ng-template</span></span>
+<span class="hljs-tag">&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">ng-template</span> #<span class="hljs-attr">elseContent</span></span>
+<span class="hljs-tag">  &gt;</span>Content exposed when the condition is false.<span class="hljs-tag">&lt;/<span class="hljs-name">ng-template</span></span>
+<span class="hljs-tag">&gt;</span></code></pre>
+
+<h3 id="Modify-the-clicked-item-style"><a href="#Modify-the-clicked-item-style" class="headerlink" title="Modify the clicked item style"></a>Modify the clicked item style</h3><p>When the index is selected, use the active css style. How to monitor the index is selected? Use the event binding, <code>(onclick)</code> to handle the selection, this function pass the index as a parameter.</p>
+<pre><code class="hljs HTML"><span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">li</span> *<span class="hljs-attr">ngFor</span>=<span class="hljs-string">"let menu of menus"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#"</span></span>
+<span class="hljs-tag">    [<span class="hljs-attr">class.active</span>]=<span class="hljs-string">"i === selectedIndex"</span></span>
+<span class="hljs-tag">    (<span class="hljs-attr">click</span>)=<span class="hljs-string">"handleSelection(i)"</span></span>
+<span class="hljs-tag">    &gt;</span> &#123;&#123;menu.title&#125;&#125; <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span></code></pre>
+
+<pre><code class="hljs css"><span class="hljs-selector-class">.active</span> &#123;
+  <span class="hljs-attribute">color</span>: red;
+&#125;</code></pre>
+
+<pre><code class="hljs typescript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> AppComponent &#123;
+  selectedId = <span class="hljs-number">-1</span>;
+
+  handleSelection(index: <span class="hljs-built_in">number</span>) &#123;
+    <span class="hljs-keyword">this</span>.selectedIndex = index;
+    <span class="hljs-keyword">this</span>.tabSelected.emit(<span class="hljs-keyword">this</span>.menus[<span class="hljs-keyword">this</span>.selectedIndex]);
+  &#125;
+&#125;</code></pre>
+
+<p>To improve the ngFor, we can add:</p>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">li</span></span>
+<span class="hljs-tag">  *<span class="hljs-attr">ngFor</span>=<span class="hljs-string">"let menu of menus; let i = index; trackBy: menu ? menu.title : null"</span></span>
+<span class="hljs-tag">&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span></code></pre>
+
+<h2 id="Step-4-Refactor-Component-create-ScrollableTabComponent"><a href="#Step-4-Refactor-Component-create-ScrollableTabComponent" class="headerlink" title="Step 4: Refactor Component: create ScrollableTabComponent"></a>Step 4: Refactor Component: create ScrollableTabComponent</h2><p>To make the logic clearly, move the logic codes from AppComponent to ScrollableTabComponent, chang the AppComponent to call the ScrollableTabComponent.</p>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">app-scrollable-tab</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">app-scrollable-tab</span>&gt;</span></code></pre>
+
+<p>Remember to add ScrollableTabComponent to the <code>app.module.ts</code> in <code>imports</code> array.</p>
+<h2 id="Step-5-add-feature-in-ScrollableTabComponent"><a href="#Step-5-add-feature-in-ScrollableTabComponent" class="headerlink" title="Step 5: add feature in ScrollableTabComponent"></a>Step 5: add feature in ScrollableTabComponent</h2><p>We can use <code>ngStyle</code> to define the style in html.</p>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">span</span></span>
+<span class="hljs-tag">    <span class="hljs-attr">class</span>=<span class="hljs-string">"indicator"</span></span>
+<span class="hljs-tag">    [<span class="hljs-attr">ngStyle</span>]=<span class="hljs-string">"&#123; 'background-color': indicatorColor &#125;"</span></span>
+<span class="hljs-tag">    *<span class="hljs-attr">ngIf</span>=<span class="hljs-string">"menu.link === selectedTabLink else elseTemplate"</span></span>
+<span class="hljs-tag">  &gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">ng-template</span> #<span class="hljs-attr">elseTemplate</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>Just test<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">ng-template</span>&gt;</span></code></pre>
+
+<pre><code class="hljs css"><span class="hljs-selector-tag">ul</span> <span class="hljs-selector-tag">li</span> &#123;
+  <span class="hljs-attribute">display</span>: flex;
+  <span class="hljs-attribute">flex-direction</span>: column;
+  <span class="hljs-attribute">justify-content</span>: space-between;
+  <span class="hljs-attribute">align-content</span>: center;
+  <span class="hljs-attribute">margin</span>: <span class="hljs-number">0</span> <span class="hljs-number">5px</span>;
+  <span class="hljs-attribute">padding</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">white-space</span>: nowrap;
+&#125;
+<span class="hljs-selector-class">.indicator</span> &#123;
+  <span class="hljs-comment">/* background-color: brown; */</span>
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">2px</span>;
+  <span class="hljs-comment">/* width: 2rem; */</span>
+  <span class="hljs-attribute">margin-top</span>: <span class="hljs-number">2px</span>;
+&#125;</code></pre>
+
+<h3 id="Template-Binding"><a href="#Template-Binding" class="headerlink" title="Template Binding"></a>Template Binding</h3><p>Several ways to realize Template Binding:</p>
+<ul>
+<li><pre><code class="hljs ts">&lt;div [<span class="hljs-keyword">class</span>.className]=<span class="hljs-string">"condition"</span>&gt;...&lt;<span class="hljs-regexp">/div&gt;</span></code></pre></li>
+<li><pre><code class="hljs ts">&lt;div [ngClass]=<span class="hljs-string">"&#123;'One': true, 'Two': true, 'Three': false&#125;"</span>&gt;...&lt;<span class="hljs-regexp">/div&gt;</span></code></pre></li>
+<li><pre><code class="hljs ts">&lt;div [ngStyle]=<span class="hljs-string">"&#123;'color':someColor, 'font-size':fontSize&#125;"</span>&gt;...&lt;<span class="hljs-regexp">/div&gt;</span></code></pre>
+
+<p>For example, we want to set background color, font color, font weight from upper component, then we can code like this.</p>
+<p>In <code>scollable-tab.component.html</code>, we add <code>[ngStyle]=&quot;{ &#39;background-color&#39;: backgroundColor }</code> in tag <code>&lt;ul&gt;</code> to set the background color of the list. And backgroundColor is the input variable from father component.</p>
+</li>
+</ul>
+<h3 id="Input-property-binding-and-Output-event-binding"><a href="#Input-property-binding-and-Output-event-binding" class="headerlink" title="@Input (property binding) and @Output (event binding)"></a>@Input (property binding) and @Output (event binding)</h3><p>Use <code>@Input</code> and <code>@Output</code> to decorate the property and event.</p>
+<p><strong>The <code>@Input</code> decorator indicates that the property value will be passed in from the component’s parent (in this case, the product list component).</strong></p>
+<p><strong>Define a property named tabSelected with an <code>@Output</code> decorator and an instance of event emitter. This makes it possible for the product alert component to emit an event when the value of the notify property changes.</strong></p>
+<p>We have created a menu in <code>ScrollableTabComponent</code>, we want to reuse it somewhere. So, we add a decorator <code>@Input</code> before the menu, indicating the data of this menu field is set by father component.</p>
+<pre><code class="hljs ts"><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> ScrollableTabComponent &#123;
+  <span class="hljs-meta">@Input</span>() selectedTabLink: <span class="hljs-built_in">string</span>;
+  <span class="hljs-meta">@Input</span>() menus: TopMenu[] = [];
+  <span class="hljs-meta">@Input</span>() backgroundColor = <span class="hljs-string">'#fff'</span>;
+  <span class="hljs-meta">@Input</span>() titleActiveColor = <span class="hljs-string">'yellow'</span>;
+  <span class="hljs-meta">@Input</span>() titleColor = <span class="hljs-string">'blue'</span>;
+  <span class="hljs-meta">@Input</span>() indicatorColor = <span class="hljs-string">'brown'</span>;
+  <span class="hljs-meta">@Output</span>() tabSelected = <span class="hljs-keyword">new</span> EventEmitter();
+
+  handleSelection(index: <span class="hljs-built_in">number</span>) &#123;
+    <span class="hljs-keyword">this</span>.selectIndex = index;
+    <span class="hljs-keyword">this</span>.tabSelected.emit(<span class="hljs-keyword">this</span>.menus[index]);
+  &#125;
+&#125;</code></pre>
+
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">ul</span> [<span class="hljs-attr">ngStyle</span>]=<span class="hljs-string">"&#123; 'background-color': backgroundColor &#125;"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">li</span> *<span class="hljs-attr">ngFor</span>=<span class="hljs-string">"let menu of menus; let i = index"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">a</span></span>
+<span class="hljs-tag">      [<span class="hljs-attr">ngStyle</span>]=<span class="hljs-string">"&#123; color: i === selectIndex ? titleActiveColor : titleColor &#125;"</span></span>
+<span class="hljs-tag">      (<span class="hljs-attr">click</span>)=<span class="hljs-string">"handleSelection(i)"</span></span>
+<span class="hljs-tag">    &gt;</span>
+      &#123;&#123; menu.title &#125;&#125;
+    <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">span</span></span>
+<span class="hljs-tag">      <span class="hljs-attr">class</span>=<span class="hljs-string">"indicator"</span></span>
+<span class="hljs-tag">      [<span class="hljs-attr">ngStyle</span>]=<span class="hljs-string">"&#123; 'background-color': indicatorColor &#125;"</span></span>
+<span class="hljs-tag">      *<span class="hljs-attr">ngIf</span>=<span class="hljs-string">"menu.link === selectedTabLink"</span></span>
+<span class="hljs-tag">    &gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span></code></pre>
+
+<p>Call the child component in parent component. Use all the bindings:</p>
+<ul>
+<li>Template Binding</li>
+<li>Property Binding</li>
+<li>Event Binding</li>
+</ul>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">app-scrollable-tab</span></span>
+<span class="hljs-tag">  [<span class="hljs-attr">menus</span>]=<span class="hljs-string">"topMenus$ | async"</span></span>
+<span class="hljs-tag">  (<span class="hljs-attr">tabSelected</span>)=<span class="hljs-string">"handleTabSelected($event)"</span></span>
+<span class="hljs-tag">  [<span class="hljs-attr">backgroundColor</span>]=<span class="hljs-string">"'#fff'"</span></span>
+<span class="hljs-tag">  <span class="hljs-attr">titleColor</span>=<span class="hljs-string">"#3f3f3f"</span></span>
+<span class="hljs-tag">  <span class="hljs-attr">titleActiveColor</span>=<span class="hljs-string">"red"</span></span>
+<span class="hljs-tag">  <span class="hljs-attr">indicatorColor</span>=<span class="hljs-string">"red"</span></span>
+<span class="hljs-tag">  [<span class="hljs-attr">selectedTabLink</span>]=<span class="hljs-string">"selectedTabLink$ | async"</span></span>
+<span class="hljs-tag">&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">app-scrollable-tab</span>&gt;</span></code></pre>
+
+<pre><code class="hljs ts">handleTabSelected(topMenu: TopMenu) &#123;
+   <span class="hljs-comment">// this.router.navigate(['home', topMenu.link]);</span>
+   <span class="hljs-built_in">console</span>.log(topMenu);
+ &#125;</code></pre>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Angular/">Angular</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Angular/">Angular</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning"><a rel="license noopener" href="http://creativecommons.org/licenses/by/4.0/" target="_blank"><img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" srcset="/img/loading.gif" /></a><br />This work is licensed under a <a rel="license noopener" href="http://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International License</a>.</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/08/22/Angular-8-Lifecycle-Hooks-Template-reference-variables-and-Carousel/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Angular 8: Lifecycle Hooks, Template reference variables and Carousel</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2019/05/29/Java-8-Functional-Programming-Review/">
+                        <span class="hidden-mobile">Java 8 Functional Programming Review</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6TOC',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 2,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+  
+
+  
+    <!-- Google Analytics -->
+    <script defer>
+      (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function () {
+          (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+          m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+      })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+      ga('create', 'UA-165388199-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Angular 8: Setup and Binding&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 80,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="Guodong">
+  <meta name="keywords" content="">
+  <title>Angular 8: Lifecycle Hooks, Template reference variables and Carousel - Guodong&#39;s Code Journey</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Guodong's Code Journey</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/angular.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2019-08-22 15:33">
+                    August 22, 2019 3:33 PM
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    1k words
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    6
+                     minutes
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  Last updated: November 15, 2020 8:44 PM
+                
+              </p>
+            
+            <article class="markdown-body">
+              <!-- # Angular 8: Lifecycle Hooks, Template reference variables and Carousel -->
+
+<p>Angular 8 Demo Project Log and Experience Part 2.</p>
+<h2 id="Lifecycle-Hooks"><a href="#Lifecycle-Hooks" class="headerlink" title="Lifecycle Hooks"></a>Lifecycle Hooks</h2><p>The general Angular life cycle is below:</p>
+<img src="/2019/08/22/Angular-8-Lifecycle-Hooks-Template-reference-variables-and-Carousel/Angular-Lifecycle-hooks-order.png" srcset="/img/loading.gif" class="" title="Angular Lifecycle hooks order">
+
+<br/>
+<br/>
+
+<p>This life cycle has different hooks:</p>
+<img src="/2019/08/22/Angular-8-Lifecycle-Hooks-Template-reference-variables-and-Carousel/lifecycle-hooks.png" srcset="/img/loading.gif" class="" title="Angular Lifecycle hooks">
+
+
+<ul>
+<li><p><code>constructor()</code>: This will always be called at first.</p>
+</li>
+<li><p><code>ngOnChanges(changes: SimpleChanges): void {}</code>: Check changes of the component.</p>
+<ul>
+<li>Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.</li>
+<li>Called when input properties of component changes. changes is a dict type object <code>(key: property name, value: SimpleChange)</code>.</li>
+<li>Add implements <code>OnChanges</code> to the class.</li>
+</ul>
+</li>
+<li><p><code>ngOnInit()</code>: Initialize the component. In this func we can safely use properties and methods of component.</p>
+</li>
+<li><p><code>ngAfterContentInit(): void {}</code>: Initialize the content of component.</p>
+<ul>
+<li>Called after <code>ngOnInit</code> when the component’s or directive’s content has been initialized.</li>
+<li>Add implements <code>AfterContentInit</code> to the class.</li>
+<li>By default, our component doesn’t support nesting. That is in the below example the Hello will not be displayed in the view. To display it, we add an <code>&lt;ng-content&gt;</code> tag in the <code>ScrollableTabComponent</code> to let the component have a content.</li>
+</ul>
+</li>
+<li><p><code>ngAfterContentChecked(): void {}</code>: Check invalid data in the content of component. Called after every check of the component’s or directive’s content.</p>
+</li>
+<li><p><code>ngAfterViewInit()</code>: Initialize the view of the component.</p>
+<ul>
+<li>View includes the component and all its sub-components.</li>
+<li>Called after ngAfterContentInit when the component’s view has been initialized. Applies to components only.</li>
+</ul>
+</li>
+<li><p><code>ngAfterViewChecked(): void {}</code>: Check invalid data in the view. Called after every check of the component’s view. Applies to components only.</p>
+</li>
+<li><p><code>ngOnCheck(): void {}</code>: Check invalid data of component.</p>
+<ul>
+<li>Called every time that the input properties of a component or a directive are checked.</li>
+<li>Use it to extend change detection by performing a custom check.</li>
+</ul>
+</li>
+<li><p><code>ngOnDestroy(): void {}</code>: Called once, before the instance is destroyed. How to trigger this directive. We can use <code>*ngIf</code>, if it is falsy the component will be destroyed. For example, This is used when we want to do some clearance, e.g. when setting interval.</p>
+</li>
+</ul>
+<h3 id="Code-example-and-output"><a href="#Code-example-and-output" class="headerlink" title="Code example and output"></a>Code example and output</h3><p>Add the code in <code>ScrollableTabComponent</code></p>
+<pre><code class="hljs ts"><span class="hljs-keyword">constructor</span>(<span class="hljs-params"></span>) &#123;
+   <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'constructor called'</span>);
+ &#125;
+ ngOnChanges(changes: SimpleChanges): <span class="hljs-built_in">void</span> &#123;
+   <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Component input changes, call ngOnChanges: '</span>, changes);
+ &#125;
+ ngOnInit() &#123;
+   <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'ngOnInit called'</span>);
+ &#125;
+ ngAfterContentInit(): <span class="hljs-built_in">void</span> &#123;
+   <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'ngAfterContentInit called'</span>);
+ &#125;
+ ngAfterContentChecked(): <span class="hljs-built_in">void</span> &#123;
+   <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'ngAfterContentChecked called'</span>);
+ &#125;
+ ngAfterViewInit(): <span class="hljs-built_in">void</span> &#123;
+   <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'ngAfterViewInit called'</span>);
+ &#125;
+ ngAfterViewChecked(): <span class="hljs-built_in">void</span> &#123;
+   <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'ngAfterViewChecked called'</span>);
+ &#125;
+ ngOnDestroy(): <span class="hljs-built_in">void</span> &#123;
+   <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'ngOnDestroy'</span>);
+ &#125;</code></pre>
+
+<p>The output is:</p>
+<img src="/2019/08/22/Angular-8-Lifecycle-Hooks-Template-reference-variables-and-Carousel/lifecycle-hooks-output.png" srcset="/img/loading.gif" class="" title="Angular Lifecycle hooks output">
+
+<h2 id="Template-reference-variables"><a href="#Template-reference-variables" class="headerlink" title="Template reference variables"></a>Template reference variables</h2><h3 id="Template-reference-variables-I"><a href="#Template-reference-variables-I" class="headerlink" title="Template reference variables I"></a>Template reference variables I</h3><p>We can use <code>#refName</code> to name the reference of template element. For example,</p>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> #<span class="hljs-attr">helloDiv</span>&gt;</span>Hello<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
+
+<p>Since the scope of the <code>refName</code> is global, so it should be unique. Then we can use this <code>refName</code> as the reference of template element. In the following example, the <code>@ViewChild</code> is a selector, used to find the DOM element or component. ElementRef is a wrapper class of DOM element. Since DOM element is not an Angular class, so a wrapper class is needed to conveniently use and identify different types of DOM elements.</p>
+<pre><code class="hljs ts"><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> AppComponent &#123;
+  <span class="hljs-meta">@ViewChild</span>(<span class="hljs-string">'helloDiv'</span>) helloDivRef: ElementRef;
+&#125;</code></pre>
+
+<h3 id="Template-reference-variables-II"><a href="#Template-reference-variables-II" class="headerlink" title="Template reference variables II"></a>Template reference variables II</h3><p>we can also use <code>type name</code>. For example,</p>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">app-image-slider</span> [<span class="hljs-attr">sliders</span>]=<span class="hljs-string">"imageSliders"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">app-image-slider</span>&gt;</span></code></pre>
+
+<pre><code class="hljs ts"><span class="hljs-meta">@ViewChild</span>(<span class="hljs-string">'ImageSliderComponent'</span>) imageSlider: ImageSliderComponent;</code></pre>
+
+<p>If we want to refer to multiple elements, we can use <code>@ViewChildren(refName or typeName)</code>. Then declaration type should be <code>QueryList&lt;?&gt;</code>.For example,</p>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">img</span></span>
+<span class="hljs-tag">  #<span class="hljs-attr">img</span></span>
+<span class="hljs-tag">  *<span class="hljs-attr">ngFor</span>=<span class="hljs-string">"let slider of sliders"</span></span>
+<span class="hljs-tag">  [<span class="hljs-attr">src</span>]=<span class="hljs-string">"slider.imgUrl"</span></span>
+<span class="hljs-tag">  [<span class="hljs-attr">alt</span>]=<span class="hljs-string">"slider.caption"</span></span>
+<span class="hljs-tag">/&gt;</span></code></pre>
+
+<pre><code class="hljs ts"><span class="hljs-meta">@ViewChildren</span>(<span class="hljs-string">'img'</span>) imgs: QueryList&lt;ElementRef&gt;;</code></pre>
+
+<p>Then we can change style of DOM elements. Changing properties of DOM elements is always not recommended in Angular, since this may cause Injection. Instead we can use <code>Renderer2</code> module. For example,</p>
+<pre><code class="hljs ts"><span class="hljs-keyword">constructor</span> (<span class="hljs-params"><span class="hljs-keyword">private</span> rd2: Renderer2</span>) &#123;&#125;
+
+<span class="hljs-meta">@ViewChildren</span>(<span class="hljs-string">'img'</span>) imgs: QueryList&lt;ElementRef&gt;;
+
+ngAfterViewInit () &#123;
+  <span class="hljs-keyword">this</span>.imgs.forEach(<span class="hljs-function"><span class="hljs-params">item</span> =&gt;</span> &#123;
+    <span class="hljs-keyword">this</span>.rd2.setStyle(item.nativeElement, <span class="hljs-string">'height'</span>, <span class="hljs-string">'100px'</span>)
+  &#125;);
+&#125;</code></pre>
+
+<h3 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h3><ul>
+<li><code>@ViewChild()</code> can be used to ref the view elements. These elements can be Angular component or DOM elements.</li>
+<li>In AfterViewInit, we can safely use elements referred by <code>@ViewChild()</code>.</li>
+<li>It’s better to use <code>Renderer2</code> to operate DOM elements.</li>
+</ul>
+<h2 id="Carousel-ImageSliderComponent"><a href="#Carousel-ImageSliderComponent" class="headerlink" title="Carousel: ImageSliderComponent"></a>Carousel: ImageSliderComponent</h2><p>Use <code>setInterval()</code> method, letting each img scrollLeft a specific length every 2 seconds. We did this in <code>ngAfterViewInit()</code>.</p>
+<p>Use <code>Renderer2</code> to safely change the property, <strong>DO NOT</strong> use DOM directly.</p>
+<pre><code class="hljs ts"><span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> ImageSlider &#123;
+  imgUrl: <span class="hljs-built_in">string</span>;
+  link: <span class="hljs-built_in">string</span>;
+  caption: <span class="hljs-built_in">string</span>;
+&#125;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> ImageSliderComponent <span class="hljs-keyword">implements</span> OnInit, AfterViewInit, OnDestroy &#123;
+  <span class="hljs-meta">@Input</span>() sliders: ImageSlider[] = [];
+  <span class="hljs-meta">@Input</span>() sliderHeight = <span class="hljs-string">'160xp'</span>;
+  <span class="hljs-meta">@Input</span>() intervalBySeconds = <span class="hljs-number">2</span>;
+  selectIndex = <span class="hljs-number">0</span>;
+  intervalId;
+  <span class="hljs-meta">@ViewChild</span>(<span class="hljs-string">'imageSlider'</span>, &#123; <span class="hljs-keyword">static</span>: <span class="hljs-literal">true</span> &#125;) imgSlider: ElementRef;
+
+  <span class="hljs-keyword">constructor</span>(<span class="hljs-params"><span class="hljs-keyword">private</span> rd2: Renderer2</span>) &#123;&#125;
+
+  ngOnInit() &#123;&#125;
+
+  ngAfterViewInit(): <span class="hljs-built_in">void</span> &#123;
+    <span class="hljs-keyword">this</span>.intervalId = setInterval(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> &#123;
+      <span class="hljs-keyword">this</span>.rd2.setProperty(
+        <span class="hljs-keyword">this</span>.imgSlider.nativeElement,
+        <span class="hljs-string">'scrollLeft'</span>,
+        (<span class="hljs-keyword">this</span>.getIndex(++<span class="hljs-keyword">this</span>.selectIndex) *
+          <span class="hljs-keyword">this</span>.imgSlider.nativeElement.scrollWidth) /
+          <span class="hljs-keyword">this</span>.sliders.length
+      );
+    &#125;, <span class="hljs-keyword">this</span>.intervalBySeconds * <span class="hljs-number">1000</span>);
+  &#125;
+
+  getIndex(idx: <span class="hljs-built_in">number</span>): <span class="hljs-built_in">number</span> &#123;
+    <span class="hljs-keyword">return</span> idx &gt;= <span class="hljs-number">0</span>
+      ? idx % <span class="hljs-keyword">this</span>.sliders.length
+      : <span class="hljs-keyword">this</span>.sliders.length - (<span class="hljs-built_in">Math</span>.abs(idx) % <span class="hljs-keyword">this</span>.sliders.length);
+  &#125;
+
+  handleScroll(ev: <span class="hljs-built_in">any</span>) &#123;
+    <span class="hljs-keyword">const</span> ratio =
+      (ev.target.scrollLeft * <span class="hljs-keyword">this</span>.sliders.length) / ev.target.scrollWidth;
+    <span class="hljs-keyword">this</span>.selectIndex = <span class="hljs-built_in">Math</span>.round(ratio);
+  &#125;
+
+  ngOnDestroy(): <span class="hljs-built_in">void</span> &#123;
+    clearInterval(<span class="hljs-keyword">this</span>.intervalId);
+  &#125;
+&#125;</code></pre>
+
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"container"</span> [<span class="hljs-attr">ngStyle</span>]=<span class="hljs-string">"&#123; height: sliderHeight &#125;"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"image-slider"</span> (<span class="hljs-attr">scroll</span>)=<span class="hljs-string">"handleScroll($event)"</span> #<span class="hljs-attr">imageSlider</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">img</span></span>
+<span class="hljs-tag">      #<span class="hljs-attr">img</span></span>
+<span class="hljs-tag">      *<span class="hljs-attr">ngFor</span>=<span class="hljs-string">"let slider of sliders"</span></span>
+<span class="hljs-tag">      [<span class="hljs-attr">src</span>]=<span class="hljs-string">"slider.imgUrl"</span></span>
+<span class="hljs-tag">      [<span class="hljs-attr">alt</span>]=<span class="hljs-string">"slider.caption"</span></span>
+<span class="hljs-tag">    /&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"nav-section"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">span</span></span>
+<span class="hljs-tag">      *<span class="hljs-attr">ngFor</span>=<span class="hljs-string">"let _ of sliders; let idx = index"</span></span>
+<span class="hljs-tag">      [<span class="hljs-attr">ngClass</span>]=<span class="hljs-string">"&#123; 'slider-button-select': idx === selectIndex &#125;"</span></span>
+<span class="hljs-tag">      <span class="hljs-attr">class</span>=<span class="hljs-string">"slider-button"</span></span>
+<span class="hljs-tag">    &gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
+
+<pre><code class="hljs css"><span class="hljs-selector-class">.nav-section</span> &#123;
+  <span class="hljs-attribute">position</span>: absolute;
+  <span class="hljs-attribute">bottom</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">100%</span>;
+  <span class="hljs-attribute">opacity</span>: <span class="hljs-number">0.5</span>;
+  <span class="hljs-attribute">color</span>: <span class="hljs-number">#fff</span>;
+  <span class="hljs-attribute">background-color</span>: <span class="hljs-number">#000000</span>;
+  <span class="hljs-attribute">display</span>: flex;
+  <span class="hljs-attribute">justify-content</span>: flex-end;
+  <span class="hljs-attribute">align-items</span>: stretch;
+&#125;
+
+<span class="hljs-selector-class">.nav-section</span> <span class="hljs-selector-class">.slider-button</span> &#123;
+  <span class="hljs-attribute">display</span>: flex;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">10px</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">10px</span>;
+  <span class="hljs-attribute">background-color</span>: <span class="hljs-number">#fff</span>;
+  <span class="hljs-attribute">text-decoration</span>: none;
+  <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">50%</span>;
+  <span class="hljs-attribute">margin</span>: <span class="hljs-number">5px</span>;
+&#125;</code></pre>
+
+<p>Call child component from parent component.</p>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">app-image-slider</span> [<span class="hljs-attr">sliders</span>]=<span class="hljs-string">"imagesSliders"</span> #<span class="hljs-attr">imageSlider</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">app-image-slider</span>&gt;</span></code></pre>
+
+<p>The Reference name <code>#imageSlider</code> same as in the ts file <code>@ViewChild</code>.</p>
+<p>We can safely use <code>@ViewChild</code> referenced element in <code>ngAfterViewInit</code>.</p>
+<pre><code class="hljs ts"><span class="hljs-meta">@ViewChild</span>(<span class="hljs-string">'imageSlider'</span>, &#123; <span class="hljs-keyword">static</span>: <span class="hljs-literal">true</span> &#125;) imgSlider: ImageSliderComponent;
+<span class="hljs-comment">// @ViewChild(ImageSliderComponent) imgSlider: ImageSliderComponent;</span>
+
+imagesSliders: ImageSlider[] = [
+    &#123;
+      imgUrl:
+        <span class="hljs-string">'https://xxx'</span>,
+      link: <span class="hljs-string">''</span>,
+      caption: <span class="hljs-string">''</span>
+    &#125;,
+]</code></pre>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Angular/">Angular</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Angular/">Angular</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning"><a rel="license noopener" href="http://creativecommons.org/licenses/by/4.0/" target="_blank"><img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" srcset="/img/loading.gif" /></a><br />This work is licensed under a <a rel="license noopener" href="http://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International License</a>.</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/08/23/Angular-8-Decorator-Directiveand-and-Style-Binding-Event-Binding/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Angular 8: Decorator, Directiveand and Style Binding/Event Binding</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2019/08/21/Angular-8-setup-and-binding/">
+                        <span class="hidden-mobile">Angular 8: Setup and Binding</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6TOC',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 2,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+  
+
+  
+    <!-- Google Analytics -->
+    <script defer>
+      (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function () {
+          (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+          m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+      })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+      ga('create', 'UA-165388199-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Angular 8: Lifecycle Hooks, Template reference variables and Carousel&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 80,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

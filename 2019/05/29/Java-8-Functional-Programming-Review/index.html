@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="Guodong">
+  <meta name="keywords" content="">
+  <title>Java 8 Functional Programming Review - Guodong&#39;s Code Journey</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Guodong's Code Journey</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/java8-features.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2019-05-29 16:40">
+                    May 29, 2019 4:40 PM
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    893 words
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    5
+                     minutes
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  Last updated: November 15, 2020 8:44 PM
+                
+              </p>
+            
+            <article class="markdown-body">
+              <!-- # Java 8 Functional Programming Review -->
+
+<h2 id="Concept"><a href="#Concept" class="headerlink" title="Concept"></a>Concept</h2><p><strong>Functional programming</strong> is a <strong>programming</strong> paradigm - a style of building the structure and elements of computer programs.</p>
+<p>The flag that you handle function programming: Familiar to use <strong>Stream API</strong> and <strong>lambda expressions</strong>, keep the <strong>stream</strong> idea in mind and use the idea in coding work. </p>
+<p>Imperative programming: focus on <strong>HOW</strong> to do: you must tell the detail steps to describe how to make the work done.</p>
+<p>Functional programming: focus on <strong>WHAT</strong> to do: tell Java what you need.</p>
+<h2 id="Lambda-return-an-new-instance-of-a-specific-type"><a href="#Lambda-return-an-new-instance-of-a-specific-type" class="headerlink" title="Lambda return an new instance of a specific type"></a>Lambda return an new instance of a specific type</h2><p>Consider the following equal codes in imperative and functional programming:</p>
+<pre><code class="hljs java"><span class="hljs-keyword">new</span> Thread(<span class="hljs-keyword">new</span> Runnable() &#123;
+  <span class="hljs-meta">@Override</span>
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span><span class="hljs-params">()</span> </span>&#123;
+    System.out.println(<span class="hljs-string">"Imperative programming"</span>);
+  &#125;
+&#125;).start();</code></pre>
+
+<pre><code class="hljs java"><span class="hljs-keyword">new</span> Thread(() -&gt; System.out.println(<span class="hljs-string">"Functional programming"</span>)).start();</code></pre>
+
+<p>If we refactor these code, there will be</p>
+<pre><code class="hljs java">Runnable target =
+    <span class="hljs-keyword">new</span> Runnable() &#123;
+      <span class="hljs-meta">@Override</span>
+      <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span><span class="hljs-params">()</span> </span>&#123;
+        System.out.println(<span class="hljs-string">"Imperative programming"</span>);
+      &#125;
+    &#125;;
+<span class="hljs-keyword">new</span> Thread(target).start();</code></pre>
+
+<pre><code class="hljs java">Runnable target1 = () -&gt; System.out.println(<span class="hljs-string">"Functional programming"</span>);
+<span class="hljs-keyword">new</span> Thread(target1).start();</code></pre>
+
+<p>Or, you can create a object instance to hold the value returned by the lambda.</p>
+<pre><code class="hljs java">Object target1 = (Runnable) () -&gt; System.out.println(<span class="hljs-string">"Functional programming"</span>);
+   <span class="hljs-keyword">new</span> Thread((Runnable) target1).start();</code></pre>
+
+<p>The lambda return a new instance of a specific type : Runnable object name target1.</p>
+<h2 id="JDK8-new-feature-default-method-in-Interface"><a href="#JDK8-new-feature-default-method-in-Interface" class="headerlink" title="JDK8 new feature: default method in Interface"></a>JDK8 new feature: default method in Interface</h2><p>The annotation <strong>@FunctionalInterface</strong> is default annotation(you can emit), but highly recommend to put this annotation above the interface. That can remind you.</p>
+<pre><code class="hljs java"><span class="hljs-meta">@FunctionalInterface</span>
+<span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">InterfaceDemo</span> </span>&#123;
+  <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">doubleNum</span><span class="hljs-params">(<span class="hljs-keyword">int</span> i)</span></span>;
+  <span class="hljs-function"><span class="hljs-keyword">default</span> <span class="hljs-keyword">int</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x, <span class="hljs-keyword">int</span> y)</span> </span>&#123;    <span class="hljs-keyword">return</span> x + y;  &#125;
+&#125;</code></pre>
+
+
+
+<h2 id="Different-expression-of-lambda"><a href="#Different-expression-of-lambda" class="headerlink" title="Different expression of lambda"></a>Different expression of lambda</h2><pre><code class="hljs java"><span class="hljs-comment">// with brackets in variable    </span>
+InterfaceDemo i1 = (i) -&gt; i * <span class="hljs-number">2</span>;
+
+   <span class="hljs-comment">// most common expression</span>
+   InterfaceDemo i2 = i -&gt; i * <span class="hljs-number">2</span>;
+
+<span class="hljs-comment">// with type declairtion </span>
+   InteInterfaceDemorface1 i3 = (<span class="hljs-keyword">int</span> i) -&gt; i * <span class="hljs-number">2</span>;
+
+<span class="hljs-comment">// expression way</span>
+   InterfaceDemo i4 =
+       (<span class="hljs-keyword">int</span> i) -&gt; &#123;
+         <span class="hljs-keyword">return</span> i * <span class="hljs-number">2</span>;
+       &#125;;</code></pre>
+
+
+
+<h2 id="Important-function-interface"><a href="#Important-function-interface" class="headerlink" title="Important function interface"></a>Important function interface</h2><h3 id="Function-lt-T-R-gt"><a href="#Function-lt-T-R-gt" class="headerlink" title="Function&lt;T, R&gt;"></a>Function&lt;T, R&gt;</h3><p>Example 1:</p>
+<pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">IMoneyFormat</span> </span>&#123;
+  <span class="hljs-function">String <span class="hljs-title">format</span><span class="hljs-params">(<span class="hljs-keyword">int</span> i)</span></span>;
+&#125;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyMoney</span> </span>&#123;
+  <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> money;
+
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">MyMoney</span><span class="hljs-params">(<span class="hljs-keyword">int</span> money)</span> </span>&#123;
+    <span class="hljs-keyword">this</span>.money = money;
+  &#125;
+
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">printMoney</span><span class="hljs-params">(IMoneyFormat moneyFormat)</span> </span>&#123;
+    System.out.println(<span class="hljs-string">"My Saving: "</span> + moneyFormat.format(<span class="hljs-keyword">this</span>.money));
+  &#125;
+&#125;
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">FunctionInterfaceDemo</span> </span>&#123;
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;
+    MyMoney mm = <span class="hljs-keyword">new</span> MyMoney(<span class="hljs-number">9999999</span>);
+    mm.printMoney(i -&gt; <span class="hljs-keyword">new</span> DecimalFormat(<span class="hljs-string">"#,###"</span>).format(i));
+  &#125;
+&#125;</code></pre>
+
+<p>Example 1 output is: <code>My Saving: 9,999,999</code>.</p>
+<p>The lambda does not care about the interface’s detail or name. It only concern about the input and output. In example 1, the lambda only need to know the input is an <strong>int</strong>,  the return value is a <strong>String</strong>.</p>
+<p>Base on this, we can refactor the printMoney function to example 2:</p>
+<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">printMoney</span><span class="hljs-params">(Function&lt;Integer, String&gt; moneyFormat)</span> </span>&#123;
+  System.out.println(<span class="hljs-string">"My Saving: "</span> + moneyFormat.apply(<span class="hljs-keyword">this</span>.money));
+&#125;</code></pre>
+
+<p>in example 2, we now can delete the interface IMoneyFormat, instead, we can use Function interface which JDK8 provided. The Function interface can support Chain calls.</p>
+<pre><code class="hljs java">  MyMoney mm = <span class="hljs-keyword">new</span> MyMoney(<span class="hljs-number">9999999</span>);
+  Function&lt;Integer, String&gt; moneyFormat = i -&gt; <span class="hljs-keyword">new</span> DecimalFormat(<span class="hljs-string">"#,###"</span>).format(i);
+  <span class="hljs-comment">// Function interface chain calls</span>
+  mm.printMoney(moneyFormat.andThen(s -&gt; <span class="hljs-string">"CAD "</span> + s));
+&#125;</code></pre>
+
+<p>The output is <code>My Saving: CAD 9,999,999</code>.</p>
+<h3 id="Predicate"><a href="#Predicate" class="headerlink" title="Predicate"></a>Predicate</h3><pre><code class="hljs java"><span class="hljs-comment">// Predicate interface</span>
+ Predicate&lt;Integer&gt; predicate = i -&gt; i &gt; <span class="hljs-number">0</span>;
+ System.out.println(predicate.test(-<span class="hljs-number">9</span>));
+ IntPredicate predicate1 = i -&gt; i &gt; <span class="hljs-number">0</span>;
+ System.out.println(predicate1.test(-<span class="hljs-number">8</span>));</code></pre>
+
+<p>The output is </p>
+<pre><code class="hljs plain">false
+false</code></pre>
+
+<p>The best practice is use IntPredicate.</p>
+<h3 id="Consumer"><a href="#Consumer" class="headerlink" title="Consumer"></a>Consumer</h3><pre><code class="hljs java"><span class="hljs-comment">// Consumer interface	</span>
+Consumer&lt;String&gt; consumer = s -&gt; System.out.println(s);
+   consumer.accept(<span class="hljs-string">"Input data"</span>);</code></pre>
+
+
+
+<h2 id="Method-References"><a href="#Method-References" class="headerlink" title="Method References"></a>Method References</h2><p>The code </p>
+<pre><code class="hljs java">Consumer&lt;String&gt; consumer = s -&gt; System.out.println(s);</code></pre>
+
+<p>can refactor to a method reference way:</p>
+<pre><code class="hljs java">Consumer&lt;String&gt; consumer = System.out::println;</code></pre>
+
+
+
+<h3 id="Reference-to-a-static-method"><a href="#Reference-to-a-static-method" class="headerlink" title="Reference to a static method"></a>Reference to a static method</h3><p>The format is <code>ContainingClass::staticMethodName</code>.</p>
+<p>For example:</p>
+<pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Dog</span> </span>&#123;
+  <span class="hljs-keyword">private</span> String name = <span class="hljs-string">"Andrew"</span>;
+
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">bark</span><span class="hljs-params">(Dog dog)</span> </span>&#123;
+    System.out.println(dog + <span class="hljs-string">" is barking."</span>);
+  &#125;
+
+  <span class="hljs-meta">@Override</span>
+  <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">toString</span><span class="hljs-params">()</span> </span>&#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.name;
+  &#125;
+&#125;
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MethodRefrenceDemo</span> </span>&#123;
+
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;
+    <span class="hljs-comment">// Reference to a static method</span>
+    Consumer&lt;Dog&gt; consumer1 = Dog::bark;
+    Dog dog = <span class="hljs-keyword">new</span> Dog();
+    consumer1.accept(dog);
+  &#125;
+&#125;</code></pre>
+
+<p>The output is: <code>Andrew is barking.</code></p>
+<h3 id="Reference-to-an-instance-method-of-a-particular-object"><a href="#Reference-to-an-instance-method-of-a-particular-object" class="headerlink" title="Reference to an instance method of a particular object"></a>Reference to an instance method of a particular object</h3><p>The calling format is <code>containingObject::instanceMethodName</code>.</p>
+<p>Add a non-static method in class Dog.</p>
+<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">eat</span><span class="hljs-params">(<span class="hljs-keyword">int</span> num)</span> </span>&#123;
+  System.out.println(<span class="hljs-string">"eat "</span> + num + <span class="hljs-string">" kg food."</span>);
+  <span class="hljs-keyword">this</span>.food -= num;
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.food;
+&#125;</code></pre>
+
+<pre><code class="hljs java"><span class="hljs-comment">// Reference to an instance method of a particular object</span>
+   Function&lt;Integer,Integer&gt; function = dog::eat;
+   System.out.println(<span class="hljs-string">"left "</span> + function.apply(<span class="hljs-number">2</span>)+<span class="hljs-string">" kg"</span>);</code></pre>
+
+<p>The output is:</p>
+<pre><code class="hljs powershell">eat <span class="hljs-number">2</span> kg food.
+left <span class="hljs-number">8</span> kg</code></pre>
+
+<p>The function input and output type is the same, can refactor to:</p>
+<pre><code class="hljs java">UnaryOperator&lt;Integer&gt; function = dog::eat;</code></pre>
+
+<p>Further, refactor to:</p>
+<pre><code class="hljs java">IntUnaryOperator function = dog::eat;
+System.out.println(<span class="hljs-string">"left "</span> + function.applyAsInt(<span class="hljs-number">2</span>)+<span class="hljs-string">" kg"</span>);</code></pre>
+
+
+
+<h3 id="Reference-to-an-instance-method-of-an-arbitrary-object-of-a-particular-type-Class-Name-Method-Reference"><a href="#Reference-to-an-instance-method-of-an-arbitrary-object-of-a-particular-type-Class-Name-Method-Reference" class="headerlink" title="Reference to an instance method of an arbitrary object of a particular type (Class Name Method Reference)"></a>Reference to an instance method of an arbitrary object of a particular type (Class Name Method Reference)</h3><pre><code class="hljs java"><span class="hljs-comment">// Class Name Method Reference</span>
+   BiFunction&lt;Dog, Integer, Integer&gt; eatFunction = Dog::eat;
+   System.out.println(<span class="hljs-string">"left "</span> + eatFunction.apply(dog, <span class="hljs-number">2</span>) + <span class="hljs-string">" kg."</span>);</code></pre>
+
+<h3 id="Reference-to-a-constructor"><a href="#Reference-to-a-constructor" class="headerlink" title="Reference to a constructor"></a>Reference to a constructor</h3><pre><code class="hljs java"><span class="hljs-comment">// Reference to a constructor</span>
+Supplier&lt;Dog&gt; supplier = Dog::<span class="hljs-keyword">new</span>;
+System.out.println(<span class="hljs-string">"Create a new object: "</span> + supplier.get());</code></pre>
+
+<pre><code class="hljs java"><span class="hljs-comment">// Reference to a constructor with parameter</span>
+Function&lt;String, Dog&gt; function1 = Dog::<span class="hljs-keyword">new</span>;
+System.out.println(<span class="hljs-string">"Create a new object: "</span> + function1.apply(<span class="hljs-string">"New Dog"</span>));</code></pre>
+
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Java/">Java</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Java/">Java</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning"><a rel="license noopener" href="http://creativecommons.org/licenses/by/4.0/" target="_blank"><img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" srcset="/img/loading.gif" /></a><br />This work is licensed under a <a rel="license noopener" href="http://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International License</a>.</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/08/21/Angular-8-setup-and-binding/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Angular 8: Setup and Binding</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2019/03/07/Component-The-Angular-Key-concept/">
+                        <span class="hidden-mobile">Component - The Angular Key concept</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6TOC',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 2,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+  
+
+  
+    <!-- Google Analytics -->
+    <script defer>
+      (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function () {
+          (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+          m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+      })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+      ga('create', 'UA-165388199-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Java 8 Functional Programming Review&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 80,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="Guodong">
+  <meta name="keywords" content="">
+  <title>Angular 8: Decorator, Directiveand and Style Binding/Event Binding - Guodong&#39;s Code Journey</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Guodong's Code Journey</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/angular.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2019-08-23 15:57">
+                    August 23, 2019 3:57 PM
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    768 words
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    5
+                     minutes
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  Last updated: November 15, 2020 8:44 PM
+                
+              </p>
+            
+            <article class="markdown-body">
+              <!-- # Angular 8: Decorator, Directiveand and Style Binding/Event Binding -->
+
+
+<p> Angular 8 Demo Project Log and Experience Part 3.</p>
+<h2 id="Decorator-Annotation"><a href="#Decorator-Annotation" class="headerlink" title="Decorator(Annotation)"></a>Decorator(Annotation)</h2><p>Annotation or Decorator is a function, which returns a function.</p>
+<h3 id="Create-a-customer-decorator-Emoji"><a href="#Create-a-customer-decorator-Emoji" class="headerlink" title="Create a customer decorator @Emoji"></a>Create a customer decorator @Emoji</h3><pre><code class="hljs ts"><span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Emoji</span>(<span class="hljs-params"></span>) </span>&#123;
+  <span class="hljs-keyword">return</span> <span class="hljs-function">(<span class="hljs-params">target: object, key: <span class="hljs-built_in">string</span></span>) =&gt;</span> &#123;
+    <span class="hljs-keyword">let</span> val = target[key]; <span class="hljs-comment">// let val get the target's value. key is the index.</span>
+    <span class="hljs-keyword">const</span> getter = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> &#123;
+      <span class="hljs-keyword">return</span> val;
+    &#125;;
+
+    <span class="hljs-comment">// user setter to change the value</span>
+    <span class="hljs-keyword">const</span> setter = <span class="hljs-function">(<span class="hljs-params">value: <span class="hljs-built_in">string</span></span>) =&gt;</span> &#123;
+      val = <span class="hljs-string">`😂 <span class="hljs-subst">$&#123;value&#125;</span> 😂`</span>;
+    &#125;;
+
+    <span class="hljs-comment">// append the property to the target</span>
+    <span class="hljs-built_in">Object</span>.defineProperty(target, key, &#123;
+      <span class="hljs-keyword">get</span>: getter,
+      <span class="hljs-keyword">set</span>: setter,
+      enumerable: <span class="hljs-literal">true</span>,
+      configurable: <span class="hljs-literal">true</span>
+    &#125;);
+  &#125;;
+&#125;</code></pre>
+
+<p>Thus, this decorator <code>@Emoji</code> can be import to other component and use it.</p>
+<pre><code class="hljs ts"><span class="hljs-meta">@Emoji</span>() result = <span class="hljs-string">'Hello'</span>;</code></pre>
+
+<p>The result output is <code>😂 Hello 😂</code>;</p>
+<h3 id="Create-a-customer-decorator-Confirmable-’…’"><a href="#Create-a-customer-decorator-Confirmable-’…’" class="headerlink" title="Create a customer decorator @Confirmable(’…’)"></a>Create a customer decorator @Confirmable(’…’)</h3><p>This decorator contains parameter.</p>
+<pre><code class="hljs ts"><span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Confirmable</span>(<span class="hljs-params">message: <span class="hljs-built_in">string</span></span>) </span>&#123;
+  <span class="hljs-keyword">return</span> <span class="hljs-function">(<span class="hljs-params">target: object, key: <span class="hljs-built_in">string</span>, descriptor: PropertyDescriptor</span>) =&gt;</span> &#123;
+    <span class="hljs-keyword">const</span> original = descriptor.value;
+    descriptor.value = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">...args: <span class="hljs-built_in">any</span></span>) </span>&#123;
+      <span class="hljs-keyword">const</span> allow = <span class="hljs-built_in">window</span>.confirm(message);
+      <span class="hljs-keyword">if</span> (allow) &#123;
+        <span class="hljs-keyword">const</span> result = original.apply(args);
+        <span class="hljs-keyword">return</span> result;
+      &#125;
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+    &#125;;
+    <span class="hljs-keyword">return</span> descriptor;
+  &#125;;
+&#125;</code></pre>
+
+<p>To use this decorator.</p>
+<pre><code class="hljs ts"><span class="hljs-meta">@Confirmable</span>(<span class="hljs-string">'Are you sure to do something?'</span>)
+handleClick() &#123;
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'handle click works'</span>);
+&#125;</code></pre>
+
+<p>When clicking the button, we want to pop up a window to warn our user.</p>
+<h2 id="Directive"><a href="#Directive" class="headerlink" title="Directive"></a>Directive</h2><h3 id="Kinds"><a href="#Kinds" class="headerlink" title="Kinds"></a>Kinds</h3><p>There are three kinds of directives in Angular:</p>
+<ul>
+<li>Components: directives with a template.</li>
+<li>Structural directives: change the DOM layout by adding and removing DOM elements. <strong>Change the structure of the view</strong>, <code>ngFor</code>, <code>ngIf</code>, <code>ngSwitch</code>.</li>
+<li>Attribute directives: change the appearance or behavior of an element, component, or another directive.<strong>Used as attributes of elements</strong>, <code>ngClass</code>, <code>ngStyle</code>, <code>ngModel</code>.</li>
+</ul>
+<h3 id="Create-Custom-Directives"><a href="#Create-Custom-Directives" class="headerlink" title="Create Custom Directives"></a>Create Custom Directives</h3><p>Create a file <code>gird-item.directive.ts</code>, in this file use a shortcut <code>ng-directive</code> to generate a directive. Then a template can be generated as below.</p>
+<pre><code class="hljs ts"><span class="hljs-keyword">import</span> &#123; Directive &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">'@angular/core'</span>;
+
+<span class="hljs-meta">@Directive</span>(&#123;
+  selector: <span class="hljs-string">'appGridItem'</span>
+&#125;)
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> GridItemDirective &#123;&#125;</code></pre>
+
+<p>The selector name is wrong, it need to be an <strong>Attribute</strong>. Fix the problem to change the name to attribute:</p>
+<pre><code class="hljs ts"><span class="hljs-meta">@Directive</span>(&#123;
+  selector: <span class="hljs-string">'[appGridItem]'</span>,
+&#125;)</code></pre>
+
+<p>Also, we need to add its deceleration in <code>shared.component.ts</code> and also export it.</p>
+<p>The code to implement the directive:</p>
+<pre><code class="hljs ts"><span class="hljs-keyword">import</span> &#123; Directive &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">'@angular/core'</span>;
+
+<span class="hljs-meta">@Directive</span>(&#123;
+  selector: <span class="hljs-string">'[appGridItem]'</span>
+&#125;)
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> GridItemDirective &#123;
+  <span class="hljs-keyword">constructor</span>(<span class="hljs-params"><span class="hljs-keyword">private</span> elr: ElementRef, <span class="hljs-keyword">private</span> rd2: Renderer2</span>) &#123;
+    <span class="hljs-keyword">this</span>.rd2.setStyle(<span class="hljs-keyword">this</span>.elr.nativeElement, <span class="hljs-string">'display'</span>, <span class="hljs-string">'grid'</span>);
+    <span class="hljs-keyword">this</span>.rd2.setStyle(
+      <span class="hljs-keyword">this</span>.elr.nativeElement,
+      <span class="hljs-string">'grid-template'</span>,
+      <span class="hljs-string">`'image' 'title'`</span>
+    );
+    <span class="hljs-keyword">this</span>.rd2.setStyle(<span class="hljs-keyword">this</span>.elr.nativeElement, <span class="hljs-string">'place-itmes'</span>, <span class="hljs-string">'center'</span>);
+    <span class="hljs-keyword">this</span>.rd2.setStyle(<span class="hljs-keyword">this</span>.elr.nativeElement, <span class="hljs-string">'width'</span>, <span class="hljs-string">'4rem'</span>);
+  &#125;
+&#125;</code></pre>
+
+<p>The best practice is to set styles in the <code>ngOnInit</code>, not in the <code>constructor</code>.</p>
+<pre><code class="hljs ts"><span class="hljs-keyword">constructor</span> (<span class="hljs-params"></span>
+<span class="hljs-params">    <span class="hljs-keyword">private</span> elr: ElementRef,</span>
+<span class="hljs-params">    <span class="hljs-keyword">private</span> rd2: Renderer2</span>
+<span class="hljs-params">  </span>) &#123;&#125;
+ngOnInit() &#123;
+    <span class="hljs-keyword">this</span>.rd2.setStyle(<span class="hljs-keyword">this</span>.elr.nativeElement, <span class="hljs-string">'display'</span>, <span class="hljs-string">'grid'</span>);
+    <span class="hljs-keyword">this</span>.rd2.setStyle(<span class="hljs-keyword">this</span>.elr.nativeElement, <span class="hljs-string">'grid-template-areas'</span>, <span class="hljs-string">`'image' 'title'`</span>);
+    <span class="hljs-keyword">this</span>.rd2.setStyle(<span class="hljs-keyword">this</span>.elr.nativeElement, <span class="hljs-string">'place-items'</span>, <span class="hljs-string">'center'</span>);
+    <span class="hljs-keyword">this</span>.rd2.setStyle(<span class="hljs-keyword">this</span>.elr.nativeElement, <span class="hljs-string">'width'</span>, <span class="hljs-string">'4rem'</span>);
+  &#125;</code></pre>
+
+<h3 id="Use-Directives"><a href="#Use-Directives" class="headerlink" title="Use Directives"></a>Use Directives</h3><p>We can create <code>appGridItemImage</code> and <code>appGridItemTitle</code> directives.</p>
+<p>Directives are like properties. Now we can use these directives in the template of <code>HorizontalGridComponent</code>.</p>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">appGridItem</span> *<span class="hljs-attr">ngFor</span>=<span class="hljs-string">"let item of channels"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">img</span> [<span class="hljs-attr">src</span>]=<span class="hljs-string">"item.imgUrl"</span> <span class="hljs-attr">alt</span>=<span class="hljs-string">""</span> <span class="hljs-attr">appGridItemImage</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">appGridItemTitle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
+
+<h3 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h3><p>Directives like properties, which can be applied to HTML tags.</p>
+<h2 id="Style-Binding-Event-Binding-use-Directive"><a href="#Style-Binding-Event-Binding-use-Directive" class="headerlink" title="Style Binding / Event Binding use Directive"></a>Style Binding / Event Binding use Directive</h2><p> There is no template in directive. Directive needs a host(an element). In Angular, <code>@HostBinding</code> can be used to bind attributes and styles to host, <code>@HostListener</code> can be used to bind events to host.</p>
+<h3 id="HostBinding"><a href="#HostBinding" class="headerlink" title="@HostBinding"></a>@HostBinding</h3><p>We use <code>rd2.setStyle</code> to set styles of host, now we can use <code>@HostBinding</code> to refactor.</p>
+<pre><code class="hljs ts"><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> GridItemDirective &#123; 
+  <span class="hljs-meta">@HostBinding</span>(<span class="hljs-string">'style.display'</span>) display = <span class="hljs-string">'grid'</span>;
+  <span class="hljs-meta">@HostBinding</span>(<span class="hljs-string">'style.grid-template-areas'</span>) template = <span class="hljs-string">`'image' 'title'`</span>;
+  <span class="hljs-meta">@HostBinding</span>(<span class="hljs-string">'style.place-items'</span>) align = <span class="hljs-string">'center'</span>;
+  <span class="hljs-meta">@HostBinding</span>(<span class="hljs-string">'style.width'</span>) width = <span class="hljs-string">'4rem'</span>;
+&#125;</code></pre>
+<h3 id="HostListener"><a href="#HostListener" class="headerlink" title="@HostListener"></a>@HostListener</h3><p>It accepts two params, one is eventName(The CSS event to listen for), another is event data (args, A set of arguments to pass to the handler method when the event occurs).</p>
+<pre><code class="hljs ts"><span class="hljs-meta">@HostListener</span>(<span class="hljs-string">'click'</span>, [<span class="hljs-string">'$event.target'</span>])
+ onClick(ev) &#123;
+   <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'event: '</span>, ev);
+&#125;</code></pre>
+
+<p> We don’t need to add additional event binding in template. What we do is just click the image, the <code>@HostListener</code> is listing to the <strong>click</strong> event.</p>
+ <pre><code class="hljs html"> <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">appGridItem</span> *<span class="hljs-attr">ngFor</span>=<span class="hljs-string">"let item of channels"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">img</span> [<span class="hljs-attr">src</span>]=<span class="hljs-string">"item.icon"</span> <span class="hljs-attr">alt</span>=<span class="hljs-string">""</span> </span>
+<span class="hljs-tag">       [<span class="hljs-attr">appGridItemImage</span>]=<span class="hljs-string">"'4rem'"</span> </span>
+<span class="hljs-tag">       [<span class="hljs-attr">fitMode</span>]=<span class="hljs-string">"'cover'"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">appGridItemTitle</span>=<span class="hljs-string">"0.6rem"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"title"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
+
+<h2 id="host"><a href="#host" class="headerlink" title=":host"></a>:host</h2><p>:host is used to design component styles in .component.css. It is a pseudo-classes selector. For example,</p>
+<pre><code class="hljs css"><span class="hljs-selector-pseudo">:host</span> &#123;
+    <span class="hljs-attribute">display</span>: flex;
+    <span class="hljs-attribute">justify-content</span>: center;
+&#125;</code></pre>
+<p>The pattern defined by :host is applied to the component itself.</p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Angular/">Angular</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Angular/">Angular</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning"><a rel="license noopener" href="http://creativecommons.org/licenses/by/4.0/" target="_blank"><img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" srcset="/img/loading.gif" /></a><br />This work is licensed under a <a rel="license noopener" href="http://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International License</a>.</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/08/24/Angular-8-Content-Projection-Router-Pipe-and-Dependency-Injection/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Angular 8: Content Projection, Router, Pipe and Dependency Injection</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2019/08/22/Angular-8-Lifecycle-Hooks-Template-reference-variables-and-Carousel/">
+                        <span class="hidden-mobile">Angular 8: Lifecycle Hooks, Template reference variables and Carousel</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6TOC',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 2,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+  
+
+  
+    <!-- Google Analytics -->
+    <script defer>
+      (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function () {
+          (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+          m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+      })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+      ga('create', 'UA-165388199-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Angular 8: Decorator, Directiveand and Style Binding/Event Binding&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 80,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

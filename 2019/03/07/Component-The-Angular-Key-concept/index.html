@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="Guodong">
+  <meta name="keywords" content="">
+  <title>Component - The Angular Key concept - Guodong&#39;s Code Journey</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Guodong's Code Journey</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/angular.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2019-03-07 16:38">
+                    March 7, 2019 4:38 PM
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    755 words
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    5
+                     minutes
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  Last updated: November 15, 2020 8:44 PM
+                
+              </p>
+            
+            <article class="markdown-body">
+              <!-- # Component - The Angular Key concept -->
+
+<h2 id="The-basic-role-of-Component-Module-and-Router"><a href="#The-basic-role-of-Component-Module-and-Router" class="headerlink" title="The basic role of Component, Module and Router"></a>The basic role of Component, Module and Router</h2><h3 id="Component"><a href="#Component" class="headerlink" title="Component"></a>Component</h3><p>Component is the key of Angular, and is the core goal of the whole framework. The component can encapsulate the logic inside the component. The encapsulated component can reuse, no matter inside the project or other projects.</p>
+<h3 id="Module"><a href="#Module" class="headerlink" title="Module"></a>Module</h3><p>NgModule is the best way to organize the business code. Base on different scenario, package the components, services and routers to a independent module. The module like a piece of building blcok, which can build the whole building.</p>
+<h3 id="Router"><a href="#Router" class="headerlink" title="Router"></a>Router</h3><p>There are 3 duties of router:</p>
+<ol>
+<li>enables navigation from one view to the next as users perform application tasks.</li>
+<li>load the Async module.</li>
+<li>manage the life circle of component.</li>
+</ol>
+<h2 id="The-Component-template"><a href="#The-Component-template" class="headerlink" title="The Component template"></a>The Component template</h2><p>The component template is the most important part of Angualr. We need to understand the following points:</p>
+<h3 id="The-idea-of-Angular-Logic-less"><a href="#The-idea-of-Angular-Logic-less" class="headerlink" title="The idea of Angular: Logic-less"></a>The idea of Angular: Logic-less</h3><p>Logic-less means <strong>DO NOT</strong> write complex JavaScript expressions in the template. The reason is that the template will be excute many times, the complex will effect the performance.</p>
+<p>That’s why the Angular offical site says:</p>
+<blockquote>
+<p>You can’t use JavaScript expressions that have or promote side effects, including:</p>
+<ul>
+<li>Assignments (=, +=, -=, …)</li>
+<li>Operators such as new, typeof, instanceof, etc.</li>
+<li>Chaining expressions with ; or ,</li>
+<li>The increment and decrement operators ++ and –</li>
+<li>Some of the ES2015+ operators</li>
+</ul>
+<p>Other notable differences from JavaScript syntax include:</p>
+<ul>
+<li>No support for the bitwise operators such as | and &amp;</li>
+<li>New template expression operators, such as |, ?. and !</li>
+</ul>
+</blockquote>
+<p>Like this Angular template</p>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">li</span> *<span class="hljs-attr">ngFor</span>=<span class="hljs-string">"let race of races"</span>&gt;</span>
+    &#123;&#123;race.name&#125;&#125;
+  <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span></code></pre>
+
+<p>The browser doesn’t know the sytax of <code>*ngFor</code> and <code></code>. Thus there must be a ‘compile’ operation in the browser to get the template function, then pass the date to the funxtion, and combine with the html tags, finally insert all these to the DOM tree.</p>
+<p>There is another reason why Angular use Logic-less: in the whole life cycle of component, the template function will be excuted many time.</p>
+<h3 id="Mustache-Syntax-…"><a href="#Mustache-Syntax-…" class="headerlink" title="Mustache Syntax "></a>Mustache Syntax </h3><p>The Mustache Syntax  can do the following:</p>
+<ol>
+<li>Interpolation: embedding expressions into marked up text. Means insert the value to this place.</li>
+<li>Template expressions: produces a value and appears within the double curly braces.</li>
+<li>Get the return value of the funciton which is defined in the component.</li>
+</ol>
+<h3 id="Binding-syntax"><a href="#Binding-syntax" class="headerlink" title="Binding syntax"></a>Binding syntax</h3><h4 id="Property-Binding"><a href="#Property-Binding" class="headerlink" title="Property Binding"></a>Property Binding</h4><p>It is One-way from data source to view target. Use [].</p>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">img</span> [<span class="hljs-attr">src</span>]=<span class="hljs-string">"imgSrc"</span> /&gt;</span></code></pre>
+
+<pre><code class="hljs javascript">public imgSrc:string=<span class="hljs-string">"./assets/imgs/1.jpg"</span>;</code></pre>
+
+<h4 id="Event-Binding"><a href="#Event-Binding" class="headerlink" title="Event Binding"></a>Event Binding</h4><p>It is One-way from view target to data source. Use ().</p>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn‐success"</span> (<span class="hljs-attr">click</span>)=<span class="hljs-string">"btnClick($event)"</span>&gt;</span>
+  Test event
+<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></code></pre>
+
+<pre><code class="hljs js">public btnClick(event):<span class="hljs-keyword">void</span>&#123;
+ alert(<span class="hljs-string">"Test Event Binding！"</span>);
+ &#125;</code></pre>
+
+<h4 id="Two-way-Binding"><a href="#Two-way-Binding" class="headerlink" title="Two-way Binding"></a>Two-way Binding</h4><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">font‐resizer</span> [(<span class="hljs-attr">size</span>)]=<span class="hljs-string">"fontSizePx"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">font‐resizer</span>&gt;</span></code></pre>
+
+<pre><code class="hljs typescript"><span class="hljs-keyword">public</span> fontSizePx:<span class="hljs-built_in">number</span>=<span class="hljs-number">14</span>;</code></pre>
+
+<h3 id="Structural-Directives"><a href="#Structural-Directives" class="headerlink" title="Structural Directives"></a>Structural Directives</h3><p>There are 3 Structural directives: <strong>*ngIf</strong>, <strong>*ngFor</strong> and <strong>ngSwitch</strong>.</p>
+<h4 id="ngIf-code-example"><a href="#ngIf-code-example" class="headerlink" title="*ngIf code example"></a>*ngIf code example</h4><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">p</span> *<span class="hljs-attr">ngIf</span>=<span class="hljs-string">"isShow"</span> <span class="hljs-attr">style</span>=<span class="hljs-string">"background‐color:#ff3300"</span>&gt;</span>Show or not?<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+ <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn‐success"</span> (<span class="hljs-attr">click</span>)=<span class="hljs-string">"toggleShow()"</span>&gt;</span>Control visiable<span class="hljs-tag">&lt;/<span class="hljs-name">butto</span></span>
+<span class="hljs-tag"><span class="hljs-attr">n</span>&gt;</span></code></pre>
+
+<pre><code class="hljs ts"><span class="hljs-keyword">public</span> isShow:<span class="hljs-built_in">boolean</span>=<span class="hljs-literal">true</span>;
+<span class="hljs-keyword">public</span> toggleShow():<span class="hljs-built_in">void</span>&#123;
+<span class="hljs-keyword">this</span>.isShow=!<span class="hljs-keyword">this</span>.isShow;
+&#125;</code></pre>
+
+<h4 id="ngFor-code-example"><a href="#ngFor-code-example" class="headerlink" title="*ngFor code example"></a>*ngFor code example</h4><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">li</span> *<span class="hljs-attr">ngFor</span>=<span class="hljs-string">"let race of races;let i=index;"</span>&gt;</span>
+  &#123;&#123;i+1&#125;&#125;‐&#123;&#123;race.name&#125;&#125;
+<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span></code></pre>
+
+<pre><code class="hljs ts"><span class="hljs-keyword">public</span> races:<span class="hljs-built_in">Array</span>=[
+ &#123;name:<span class="hljs-string">"human"</span>&#125;,
+ &#123;name:<span class="hljs-string">"animal"</span>&#125;,
+ &#123;name:<span class="hljs-string">"other"</span>&#125;
+ ];</code></pre>
+
+<blockquote>
+<p>Structural directives are responsible for HTML layout. They shape or reshape the DOM’s structure, typically by adding, removing, or manipulating elements.</p>
+</blockquote>
+<p><strong>A Html tag can ONLY use ONE Structural Directives in the same time.</strong></p>
+<h3 id="Built-in-attribute-directives"><a href="#Built-in-attribute-directives" class="headerlink" title="Built-in attribute directives"></a>Built-in attribute directives</h3><blockquote>
+<p>Attribute directives listen to and modify the behavior of other HTML elements, attributes, properties, and components. They are usually applied to elements as if they were HTML attributes, hence the name.</p>
+<ul>
+<li>NgClass - add and remove a set of CSS classes</li>
+<li>NgStyle - add and remove a set of HTML styles</li>
+<li>NgModel - two-way data binding to an HTML form element</li>
+</ul>
+</blockquote>
+<h4 id="ngClass-code-example"><a href="#ngClass-code-example" class="headerlink" title="*ngClass code example"></a>*ngClass code example</h4><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> [<span class="hljs-attr">ngClass</span>]=<span class="hljs-string">"currentClasses"</span>&gt;</span>a set of CSS classes<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn‐success"</span> (<span class="hljs-attr">click</span>)=<span class="hljs-string">"setCurrentClasses()"</span>&gt;</span>Set<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></code></pre>
+
+<pre><code class="hljs ts"><span class="hljs-keyword">public</span> currentClasses: &#123;&#125;;
+
+<span class="hljs-keyword">public</span> canSave: <span class="hljs-built_in">boolean</span> = <span class="hljs-literal">true</span>;
+<span class="hljs-keyword">public</span> isUnchanged: <span class="hljs-built_in">boolean</span> = <span class="hljs-literal">true</span>;<span class="hljs-number">5</span> <span class="hljs-keyword">public</span> isSpecial: <span class="hljs-built_in">boolean</span> = <span class="hljs-literal">true</span>;
+
+setCurrentClasses() &#123;
+<span class="hljs-keyword">this</span>.currentClasses = &#123;
+<span class="hljs-string">'saveable'</span>: <span class="hljs-keyword">this</span>.canSave,
+<span class="hljs-string">'modified'</span>: <span class="hljs-keyword">this</span>.isUnchanged,
+<span class="hljs-string">'special'</span>: <span class="hljs-keyword">this</span>.isSpecial
+&#125;;
+&#125;</code></pre>
+
+<pre><code class="hljs css"><span class="hljs-selector-class">.saveable</span> &#123;
+  font‐size: 18px;
+&#125;
+<span class="hljs-selector-class">.modified</span> &#123;
+  font‐weight: bold;
+&#125;
+<span class="hljs-selector-class">.special</span> &#123;
+  background‐color: #ff3300;
+&#125;</code></pre>
+
+<h4 id="Avoid-to-use-ngStyle"><a href="#Avoid-to-use-ngStyle" class="headerlink" title="Avoid to use ngStyle"></a><strong>Avoid to use ngStyle</strong></h4><p>ngStyle write CSS style inside the code, avoid to use it. It’s a bad way to code.</p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Angular/">Angular</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Angular/">Angular</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning"><a rel="license noopener" href="http://creativecommons.org/licenses/by/4.0/" target="_blank"><img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" srcset="/img/loading.gif" /></a><br />This work is licensed under a <a rel="license noopener" href="http://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International License</a>.</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/05/29/Java-8-Functional-Programming-Review/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Java 8 Functional Programming Review</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2019/03/06/Simple-Spring-Boot-Error-jdbc-driver-update/">
+                        <span class="hidden-mobile">Simple Spring Boot Error: jdbc driver update</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6TOC',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 2,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+  
+
+  
+    <!-- Google Analytics -->
+    <script defer>
+      (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function () {
+          (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+          m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+      })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+      ga('create', 'UA-165388199-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Component - The Angular Key concept&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 80,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

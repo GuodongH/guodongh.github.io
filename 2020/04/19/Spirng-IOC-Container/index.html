@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="Guodong">
+  <meta name="keywords" content="">
+  <title>Spirng IOC Container - Guodong&#39;s Code Journey</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Guodong's Code Journey</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/road-690087_1920.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2020-04-19 19:17">
+                    April 19, 2020 7:17 PM
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    2.3k words
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    10
+                     minutes
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  Last updated: November 15, 2020 8:44 PM
+                
+              </p>
+            
+            <article class="markdown-body">
+              <!-- # Spring IOC Container 容器 -->
+
+<h2 id="Spring-IoC-依赖查找"><a href="#Spring-IoC-依赖查找" class="headerlink" title="Spring IoC 依赖查找"></a>Spring IoC 依赖查找</h2><h3 id="初始准备工作"><a href="#初始准备工作" class="headerlink" title="初始准备工作"></a>初始准备工作</h3><h4 id="创建用户类"><a href="#创建用户类" class="headerlink" title="创建用户类"></a>创建用户类</h4><p>创建用户类作为示例</p>
+<pre><code class="hljs java"><span class="hljs-meta">@Data</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">User</span> </span>&#123;
+    <span class="hljs-keyword">private</span> Long id;
+    <span class="hljs-keyword">private</span> String name;
+&#125;</code></pre>
+
+<h4 id="创建xml配置文件"><a href="#创建xml配置文件" class="headerlink" title="创建xml配置文件"></a>创建xml配置文件</h4><p>在<code>src/main/resources/META-INF</code>目录下创建<code>dependency-lookup-context.xml</code>配置文件，并配置属性：</p>
+<pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"user"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"ioc.overview.domain.User"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"id"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"1"</span>/&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"name"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"John"</span>/&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">bean</span>&gt;</span></code></pre>
+
+<h4 id="代码配置xml配置文件，并启动Spring应用上下文"><a href="#代码配置xml配置文件，并启动Spring应用上下文" class="headerlink" title="代码配置xml配置文件，并启动Spring应用上下文"></a>代码配置xml配置文件，并启动Spring应用上下文</h4><pre><code class="hljs java"><span class="hljs-comment">// 配置 XML 配置文件</span>
+<span class="hljs-comment">// 启动 Spring 应用上下文</span>
+BeanFactory beanFactory =
+    <span class="hljs-keyword">new</span> ClassPathXmlApplicationContext(<span class="hljs-string">"classpath:/META-INF/dependency-lookup-context.xml"</span>);</code></pre>
+
+<h3 id="根据Bean-名称查找"><a href="#根据Bean-名称查找" class="headerlink" title="根据Bean 名称查找"></a>根据Bean 名称查找</h3><h4 id="实时查找"><a href="#实时查找" class="headerlink" title="实时查找"></a>实时查找</h4><p>启动Spring应用上下文后，直接通过Bean名称查找就可以查找到相应的Bean:</p>
+<pre><code class="hljs ava">User user &#x3D; (User) beanFactory.getBean(&quot;user&quot;);</code></pre>
+
+<p>这种方式是<strong>实时查找</strong>，整理代码可得：</p>
+<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;
+    <span class="hljs-comment">// 配置 XML 配置文件</span>
+    <span class="hljs-comment">// 启动 Spring 应用上下文</span>
+    BeanFactory beanFactory =
+        <span class="hljs-keyword">new</span> ClassPathXmlApplicationContext(<span class="hljs-string">"classpath:/META-INF/dependency-lookup-context.xml"</span>);
+    lookupInRealTime(beanFactory);
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">lookupInRealTime</span><span class="hljs-params">(BeanFactory beanFactory)</span> </span>&#123;
+    User user = (User) beanFactory.getBean(<span class="hljs-string">"user"</span>);
+    System.out.println(<span class="hljs-string">"实时查找："</span> + user);
+&#125;</code></pre>
+
+<p>运行得到的结果为：</p>
+<pre><code class="hljs shell">实时查找：User&#123;id=1, name='John'&#125;</code></pre>
+
+
+
+<h4 id="延迟查找"><a href="#延迟查找" class="headerlink" title="延迟查找"></a>延迟查找</h4><p><code>org.springframework.beans.factory.config.ObjectFactoryCreatingFactoryBean</code>是<code>org.springframework.beans.factory.ObjectFactory</code> 的一个具体实现。</p>
+<p>在xml配置文件中，增加其配置，并在其属性中增加其所关联的bean（在这里，我们直接关联上面的 bean id）作为<code>targetBeanName</code>：</p>
+<pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"objectFactory"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"org.springframework.beans.factory.config.ObjectFactoryCreatingFactoryBean"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"targetBeanName"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"user"</span>/&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">bean</span>&gt;</span></code></pre>
+
+<p>通过<code>objectFactory</code>这个bean，就可以获得<code>user</code>这个bean，这种方式是<strong>延迟查找</strong>。</p>
+<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">lookupInLazy</span><span class="hljs-params">(BeanFactory beanFactory)</span> </span>&#123;
+    <span class="hljs-comment">// 必须进行通过强转来适配</span>
+    ObjectFactory&lt;User&gt; objectFactory = (ObjectFactory&lt;User&gt;) beanFactory.getBean(<span class="hljs-string">"objectFactory"</span>);
+    User user = objectFactory.getObject();
+    System.out.println(<span class="hljs-string">"延迟查找："</span> + user);
+&#125;</code></pre>
+
+<p>运行得到的结果为：</p>
+<pre><code class="hljs shell">延迟查找：User&#123;id=1, name='John'&#125;</code></pre>
+
+
+
+<h3 id="根据Bean-类型查找"><a href="#根据Bean-类型查找" class="headerlink" title="根据Bean 类型查找"></a>根据Bean 类型查找</h3><p>根据类型查找的原理与根据名称查找类似。直接使用Class Type进行查找即可。</p>
+<h4 id="单个Bean-对象"><a href="#单个Bean-对象" class="headerlink" title="单个Bean 对象"></a>单个Bean 对象</h4><pre><code class="hljs java"><span class="hljs-comment">// 按照类型查找</span>
+<span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">lookupByType</span><span class="hljs-params">(BeanFactory beanFactory)</span> </span>&#123;
+    User user = beanFactory.getBean(User<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span>;
+    System.out.println(<span class="hljs-string">"实时查找："</span> + user);
+&#125;</code></pre>
+
+
+
+<h4 id="集合Bean-对象"><a href="#集合Bean-对象" class="headerlink" title="集合Bean 对象"></a>集合Bean 对象</h4><p>需要使用<code>org.springframework.beans.factory.ListableBeanFactory</code>进行类型转化。</p>
+<pre><code class="hljs java"><span class="hljs-comment">// 按照类型查找结合对象</span>
+<span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">lookupCollectionByType</span><span class="hljs-params">(BeanFactory beanFactory)</span> </span>&#123;
+    <span class="hljs-keyword">if</span> (beanFactory <span class="hljs-keyword">instanceof</span> ListableBeanFactory) &#123;
+        ListableBeanFactory listableBeanFactory = (ListableBeanFactory) beanFactory;
+        Map&lt;String, User&gt; users = listableBeanFactory.getBeansOfType(User<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span>;
+        System.out.println(<span class="hljs-string">"查找到的所有的 User 集合对象："</span> + users);
+    &#125;
+&#125;</code></pre>
+
+<p>运行结果为：</p>
+<pre><code class="hljs shell">查找到的所有的 User 集合对象：&#123;user=User&#123;id=1, name='John'&#125;&#125;</code></pre>
+
+
+
+<h3 id="根据Bean-名称-类型查找"><a href="#根据Bean-名称-类型查找" class="headerlink" title="根据Bean 名称+ 类型查找"></a>根据Bean 名称+ 类型查找</h3><h3 id="根据Java-注解查找"><a href="#根据Java-注解查找" class="headerlink" title="根据Java 注解查找"></a>根据Java 注解查找</h3><p>首先准备一个SuperUser，增加一个字段，同时为了区分<code>SuperUser</code>和<code>User</code>， 需要定义一个<code>@Super</code>注解来进行区分。</p>
+<pre><code class="hljs java"><span class="hljs-meta">@Target</span>(ElementType.TYPE)
+<span class="hljs-meta">@Retention</span>(RetentionPolicy.RUNTIME)
+<span class="hljs-keyword">public</span> <span class="hljs-meta">@interface</span> Super &#123;&#125;</code></pre>
+
+<p>使用这个注解，进行区分，<code>User</code>没有<code>@Super</code>注解，而<code>SuperUser</code>有<code>@Super</code>注解：</p>
+<pre><code class="hljs java"><span class="hljs-meta">@Data</span> <span class="hljs-meta">@Super</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SuperUser</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">User</span> </span>&#123;
+    <span class="hljs-keyword">private</span> String address;
+&#125;</code></pre>
+
+<p>在xml文件中，配置<code>SuperUser</code>的bean：</p>
+<pre><code class="hljs xml"><span class="hljs-comment">&lt;!-- 普通 beanDefinition GenericBeanDefinition --&gt;</span>
+<span class="hljs-comment">&lt;!-- 合并后 GenericBeanDefinition 变成 RootBeanDefinition，并且覆盖 parent 相关配置--&gt;</span>
+<span class="hljs-comment">&lt;!-- primary = true , 增加了一个 address 属性 --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"superUser"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"ioc.overview.domain.SuperUser"</span> <span class="hljs-attr">parent</span>=<span class="hljs-string">"user"</span> <span class="hljs-attr">primary</span>=<span class="hljs-string">"true"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"address"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"Toronto"</span>/&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">bean</span>&gt;</span></code></pre>
+
+<p>如果不使用<code>primary=&quot;true&quot;</code>，那么Spring会抛出错误，因为会查找到两个bean：<code>User</code>和<code>SuperUser</code>。</p>
+<h4 id="单个Bean-对象-1"><a href="#单个Bean-对象-1" class="headerlink" title="单个Bean 对象"></a>单个Bean 对象</h4><p>查找使用了<code>@Super</code>这个注解的对象：</p>
+<pre><code class="hljs JAVA"><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">lookupByAnnotationType</span><span class="hljs-params">(BeanFactory beanFactory)</span> </span>&#123;
+    <span class="hljs-keyword">if</span> (beanFactory <span class="hljs-keyword">instanceof</span> ListableBeanFactory) &#123;
+        ListableBeanFactory listableBeanFactory = (ListableBeanFactory) beanFactory;
+        Map&lt;String, User&gt; users = (Map) listableBeanFactory.getBeansWithAnnotation(Super<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span>;
+        System.out.println(<span class="hljs-string">"查找标注 @Super 所有的 User 集合对象："</span> + users);
+    &#125;
+&#125;</code></pre>
+
+<h4 id="集合Bean-对象-1"><a href="#集合Bean-对象-1" class="headerlink" title="集合Bean 对象"></a>集合Bean 对象</h4><p>与根据Bean名称查找类似。</p>
+<h2 id="Spring-IoC-依赖注入"><a href="#Spring-IoC-依赖注入" class="headerlink" title="Spring IoC 依赖注入"></a>Spring IoC 依赖注入</h2><h4 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h4><h4 id="创建Repository"><a href="#创建Repository" class="headerlink" title="创建Repository"></a>创建Repository</h4><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">UserRepository</span> </span>&#123;
+    <span class="hljs-keyword">private</span> Collection&lt;User&gt; users; <span class="hljs-comment">// 自定义 Bean</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Collection&lt;User&gt; <span class="hljs-title">getUsers</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> users;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setUsers</span><span class="hljs-params">(Collection&lt;User&gt; users)</span> </span>&#123;
+        <span class="hljs-keyword">this</span>.users = users;
+    &#125;
+&#125;</code></pre>
+
+<h4 id="创建xml配置文件-1"><a href="#创建xml配置文件-1" class="headerlink" title="创建xml配置文件"></a>创建xml配置文件</h4><p>创建<code>src/main/resources/META-INF/dependency-injection-context.xml</code>，可以通过导入复用之前的xml配置文件，并通过手动配置bean list（注意，需要引入<code>http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd</code>才可以使用<code>util:list</code>。</p>
+<pre><code class="hljs xml"><span class="hljs-comment">&lt;!-- 通过导入复用 dependency-lookup-context.xml --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">import</span> <span class="hljs-attr">resource</span>=<span class="hljs-string">"dependency-lookup-context.xml"</span>/&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"userRepository"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"ioc.overview.repository.UserRepository"</span>&gt;</span>
+    <span class="hljs-comment">&lt;!-- 手动配置 --&gt;</span> 
+    <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"users"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">util:list</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">ref</span> <span class="hljs-attr">bean</span>=<span class="hljs-string">"superUser"</span> /&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">ref</span> <span class="hljs-attr">bean</span>=<span class="hljs-string">"user"</span> /&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">util:list</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">bean</span>&gt;</span></code></pre>
+
+<p>使用上述方法，输出为 SuperUser 和 User。</p>
+<h5 id="使用autowire进行自动配置，推荐"><a href="#使用autowire进行自动配置，推荐" class="headerlink" title="使用autowire进行自动配置，推荐"></a>使用<code>autowire</code>进行自动配置，<strong>推荐</strong></h5><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"userRepository"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"ioc.overview.repository.UserRepository"</span> <span class="hljs-attr">autowire</span>=<span class="hljs-string">"byType"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">bean</span>&gt;</span></code></pre>
+
+<p>使用<code>autowire</code>进行自动配置，其Bean出现的顺序，是<strong>按照bean的定义顺序来进行执行</strong>的。使用上述方法，输出必定为 User 和 SuperUser ， 因为我们先定义了User， 然后定义了SuperUser。</p>
+<h4 id="代码配置xml配置文件，并启动Spring应用上下文-1"><a href="#代码配置xml配置文件，并启动Spring应用上下文-1" class="headerlink" title="代码配置xml配置文件，并启动Spring应用上下文"></a>代码配置xml配置文件，并启动Spring应用上下文</h4><pre><code class="hljs java"><span class="hljs-comment">// 配置 XML 配置文件</span>
+<span class="hljs-comment">// 启动 Spring 应用上下文</span>
+BeanFactory beanFactory =
+    <span class="hljs-keyword">new</span> ClassPathXmlApplicationContext(<span class="hljs-string">"classpath:/META-INF/dependency-injection-context.xml"</span>);</code></pre>
+
+<h3 id="根据Bean-名称-类型-注入"><a href="#根据Bean-名称-类型-注入" class="headerlink" title="根据Bean 名称/类型 注入"></a>根据Bean 名称/类型 注入</h3><p>示例代码：</p>
+<pre><code class="hljs java">UserRepository userRepository = applicationContext.getBean(<span class="hljs-string">"userRepository"</span>, UserRepository<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span>;
+System.out.println(userRepository.getUsers());</code></pre>
+
+
+
+<h3 id="注入容器內建Bean-对象"><a href="#注入容器內建Bean-对象" class="headerlink" title="注入容器內建Bean 对象"></a>注入容器內建Bean 对象</h3><h3 id="注入非Bean-对象"><a href="#注入非Bean-对象" class="headerlink" title="注入非Bean 对象"></a>注入非Bean 对象</h3><h4 id="增加內建非-Bean-对象"><a href="#增加內建非-Bean-对象" class="headerlink" title="增加內建非 Bean 对象"></a>增加內建非 Bean 对象</h4><p>在Repository中增加<strong>內建非 Bean 对象</strong>：</p>
+<pre><code class="hljs java"><span class="hljs-keyword">private</span> BeanFactory beanFactory; <span class="hljs-comment">// 內建非 Bean 对象（依赖）</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> BeanFactory <span class="hljs-title">getBeanFactory</span><span class="hljs-params">()</span> </span>&#123;
+       <span class="hljs-keyword">return</span> beanFactory;
+   &#125;</code></pre>
+
+<p>使用Repository中的get方法，<code>userRepository.getBeanFactory()</code> 获得的结果，并不是Spring 应用上下文取得的<code>beanFactory</code>。</p>
+<pre><code class="hljs java">BeanFactory beanFactory =
+    <span class="hljs-keyword">new</span> ClassPathXmlApplicationContext(<span class="hljs-string">"classpath:/META-INF/dependency-injection-context.xml"</span>);  
+UserRepository userRepository = applicationContext.getBean(<span class="hljs-string">"userRepository"</span>, UserRepository<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span>;
+System.out.println(userFactory.getBeanFactory() == beanFactory); <span class="hljs-comment">// 输出结果为false</span></code></pre>
+
+<p>上述代码的输出结果为<code>false</code>。</p>
+<p>实际上，<code>userFactory.getBeanFactory()</code>的输出结果为：</p>
+<pre><code class="hljs shell">org.springframework.beans.factory.support.DefaultListableBeanFactory@42e99e4a: defining beans [user,superUser,objectFactory,userRepository]; root of factory hierarchy</code></pre>
+
+<p>获得了4个bean： <code>user,superUser,objectFactory,userRepository</code>。</p>
+<h4 id="验证內建对象是非-Bean-对象"><a href="#验证內建对象是非-Bean-对象" class="headerlink" title="验证內建对象是非 Bean 对象"></a>验证內建对象是非 Bean 对象</h4><p>但是，我们在<code>UserRepository</code>中增加的<code>beanFactory</code>并不是一个Bean对象，而是一个内建对象。</p>
+<p>如果通过</p>
+<pre><code class="hljs java">System.out.println(beanFactory.getBean(BeanFactory<span class="hljs-class">.<span class="hljs-keyword">class</span>))</span>;</code></pre>
+<p>查看，则会抛出错误：</p>
+<pre><code class="hljs shell">No qualifying bean of type 'org.springframework.beans.factory.BeanFactory' available</code></pre>
+
+
+
+<h3 id="注入类型"><a href="#注入类型" class="headerlink" title="注入类型"></a>注入类型</h3><h4 id="实时注入"><a href="#实时注入" class="headerlink" title="实时注入"></a>实时注入</h4><p>以上的代码均为实时注入。</p>
+<h4 id="延迟注入"><a href="#延迟注入" class="headerlink" title="延迟注入"></a>延迟注入</h4><p>在Repository中增加Field:</p>
+<pre><code class="hljs java"><span class="hljs-keyword">private</span> ObjectFactory&lt;User&gt; objectFactory;
+
+<span class="hljs-function"><span class="hljs-keyword">public</span> ObjectFactory&lt;User&gt; <span class="hljs-title">getObjectFactory</span><span class="hljs-params">()</span> </span>&#123;
+    <span class="hljs-keyword">return</span> objectFactory;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setObjectFactory</span><span class="hljs-params">(ObjectFactory&lt;User&gt; objectFactory)</span> </span>&#123;
+    <span class="hljs-keyword">this</span>.objectFactory = objectFactory;
+&#125;</code></pre>
+
+<p>通过下述代码可以得到<code>SuperUser</code>对象。</p>
+<pre><code class="hljs java">ObjectFactory userFactory = userRepository.getObjectFactory();
+System.out.println(userFactory.getObjext());</code></pre>
+
+<p>输出结果为：</p>
+<pre><code class="hljs shell">SuperUser&#123;address='Toronro'&#125; User&#123;id=1, name='John'&#125;</code></pre>
+
+<p>如果将<code>UserRepository</code>中的<code>objectFactory</code>类型更改为<code>ApplicationContext</code>：</p>
+<pre><code class="hljs java"><span class="hljs-keyword">private</span> ObjectFactory&lt;ApplicationContext&gt; objectFactory;</code></pre>
+<p>则上述代码输出结果为：</p>
+<pre><code class="hljs shell">org.springframework.context.support.ClassPathXmlApplicationContext@245f6ad</code></pre>
+
+<p>而<code>System.out.println(userFactory.getObject() == beanFactory)</code>的输出结果为<code>true</code>。完整代码如下：</p>
+<pre><code class="hljs java">BeanFactory beanFactory =
+    <span class="hljs-keyword">new</span> ClassPathXmlApplicationContext(<span class="hljs-string">"classpath:/META-INF/dependency-injection-context.xml"</span>);  
+UserRepository userRepository = applicationContext.getBean(<span class="hljs-string">"userRepository"</span>, UserRepository<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span>;
+ObjectFactory userFactory = userRepository.getObjectFactory();
+System.out.println(userFactory.getObject() == beanFactory); <span class="hljs-comment">// 结果为true</span></code></pre>
+
+<h2 id="Spring-IoC-依赖来源"><a href="#Spring-IoC-依赖来源" class="headerlink" title="Spring IoC 依赖来源"></a>Spring IoC 依赖来源</h2><p>来源于下述三个地方：</p>
+<ul>
+<li><p>自定义Bean （业务上的Bean）</p>
+<p>在上面的代码中，<code>UserRepository</code>是一个自定义bean</p>
+<pre><code class="hljs java"><span class="hljs-comment">// 依赖来源一：自定义 Bean</span>
+UserRepository userRepository = applicationContext.getBean(<span class="hljs-string">"userRepository"</span>, UserRepository<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span>;</code></pre>
+
+
+
+</li>
+</ul>
+<ul>
+<li><p>容器內建Bean 对象</p>
+<pre><code class="hljs java"><span class="hljs-comment">// 依赖来源三：容器內建 Bean</span>
+Environment environment = applicationContext.getBean(Environment<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span>;
+System.out.println(<span class="hljs-string">"获取 Environment 类型的 Bean："</span> + environment);</code></pre>
+
+
+
+</li>
+</ul>
+<ul>
+<li><p>容器內建依赖（非Spring Bean）</p>
+<p>而<code>BeanFactory</code>则是容器内建依赖</p>
+<pre><code class="hljs java"><span class="hljs-comment">// 依赖来源二：依赖注入（內建依赖）</span>
+System.out.println(userRepository.getBeanFactory());</code></pre>
+
+
+
+</li>
+</ul>
+<h2 id="Spring-IoC-配置元信息"><a href="#Spring-IoC-配置元信息" class="headerlink" title="Spring IoC 配置元信息"></a>Spring IoC 配置元信息</h2><h3 id="Bean-定义配置"><a href="#Bean-定义配置" class="headerlink" title="Bean 定义配置"></a>Bean 定义配置</h3><h4 id="基于XML-文件"><a href="#基于XML-文件" class="headerlink" title="基于XML 文件"></a>基于XML 文件</h4><h4 id="基于Properties-文件"><a href="#基于Properties-文件" class="headerlink" title="基于Properties 文件"></a>基于Properties 文件</h4><h4 id="基于Java-注解"><a href="#基于Java-注解" class="headerlink" title="基于Java 注解"></a>基于Java 注解</h4><h4 id="基于Java-API（专题讨论）"><a href="#基于Java-API（专题讨论）" class="headerlink" title="基于Java API（专题讨论）"></a>基于Java API（专题讨论）</h4><h3 id="IoC-容器配置"><a href="#IoC-容器配置" class="headerlink" title="IoC 容器配置"></a>IoC 容器配置</h3><h4 id="基于XML-文件-1"><a href="#基于XML-文件-1" class="headerlink" title="基于XML 文件"></a>基于XML 文件</h4><h4 id="基于Java-注解-1"><a href="#基于Java-注解-1" class="headerlink" title="基于Java 注解"></a>基于Java 注解</h4><h4 id="基于Java-API-（专题讨论）"><a href="#基于Java-API-（专题讨论）" class="headerlink" title="基于Java API （专题讨论）"></a>基于Java API （专题讨论）</h4><h3 id="I外部化属性配置"><a href="#I外部化属性配置" class="headerlink" title="I外部化属性配置"></a>I外部化属性配置</h3><h4 id="基于Java-注解-2"><a href="#基于Java-注解-2" class="headerlink" title="基于Java 注解"></a>基于Java 注解</h4><h2 id="Spring-IoC-容器"><a href="#Spring-IoC-容器" class="headerlink" title="Spring IoC 容器"></a>Spring IoC 容器</h2><p>The <code>org.springframework.beans</code> and <code>org.springframework.context</code> packages are the basis for Spring Framework’s IoC container. The <a href="https://docs.spring.io/spring-framework/docs/5.2.5.RELEASE/javadoc-api/org/springframework/beans/factory/BeanFactory.html" target="_blank" rel="noopener"><code>BeanFactory</code></a> interface provides an advanced configuration mechanism capable of managing any type of object. <a href="https://docs.spring.io/spring-framework/docs/5.2.5.RELEASE/javadoc-api/org/springframework/context/ApplicationContext.html" target="_blank" rel="noopener"><code>ApplicationContext</code></a> is a sub-interface of <code>BeanFactory</code>. It adds:</p>
+<ul>
+<li>Easier integration with Spring’s AOP features</li>
+<li>Message resource handling (for use in internationalization)</li>
+<li>Event publication</li>
+<li>Application-layer specific contexts such as the <code>WebApplicationContext</code> for use in web applications.</li>
+</ul>
+<p>In short, the <code>BeanFactory</code> provides the configuration framework and basic functionality, and the <code>ApplicationContext</code> adds more enterprise-specific functionality. The <code>ApplicationContext</code> is a complete superset of the <code>BeanFactory</code> and is used exclusively in this chapter in descriptions of Spring’s IoC container.</p>
+<h2 id="Spring-应用上下文"><a href="#Spring-应用上下文" class="headerlink" title="Spring 应用上下文"></a>Spring 应用上下文</h2><p>ApplicationContext 除了IoC 容器角色，还有提供：<br>• 面向切面（AOP）<br>• 配置元信息（Configuration Metadata）<br>• 资源管理（Resources）<br>• 事件（Events）<br>• 国际化（i18n）<br>• 注解（Annotations）<br>• Environment 抽象（Environment Abstraction）</p>
+<h2 id="使用Spring-IoC-容器"><a href="#使用Spring-IoC-容器" class="headerlink" title="使用Spring IoC 容器"></a>使用Spring IoC 容器</h2><h3 id="BeanFactory-是Spring-底层IoC-容器"><a href="#BeanFactory-是Spring-底层IoC-容器" class="headerlink" title="BeanFactory 是Spring 底层IoC 容器"></a>BeanFactory 是Spring 底层IoC 容器</h3><p>采用 BeanFactory，提供了基本的IoC功能。</p>
+<pre><code class="hljs java"><span class="hljs-comment">// 创建 BeanFactory 容器</span>
+DefaultListableBeanFactory beanFactory = <span class="hljs-keyword">new</span> DefaultListableBeanFactory();
+XmlBeanDefinitionReader reader = <span class="hljs-keyword">new</span> XmlBeanDefinitionReader(beanFactory);
+<span class="hljs-comment">// XML 配置文件 ClassPath 路径</span>
+String location = <span class="hljs-string">"classpath:/META-INF/dependency-lookup-context.xml"</span>;
+<span class="hljs-comment">// 加载配置</span>
+<span class="hljs-keyword">int</span> beanDefinitionsCount = reader.loadBeanDefinitions(location);
+System.out.println(<span class="hljs-string">"Bean 定义加载的数量："</span> + beanDefinitionsCount); <span class="hljs-comment">// 输出为 3</span>
+<span class="hljs-comment">// 依赖查找集合对象</span>
+lookupCollectionByType(beanFactory);</code></pre>
+
+<h3 id="ApplicationContext-是具备应用特性的BeanFactory-超集"><a href="#ApplicationContext-是具备应用特性的BeanFactory-超集" class="headerlink" title="ApplicationContext 是具备应用特性的BeanFactory 超集"></a>ApplicationContext 是具备应用特性的BeanFactory 超集</h3><p>首先，通过 Java 注解的方式，定义了一个 Bean。</p>
+<pre><code class="hljs java"><span class="hljs-comment">// 通过 Java 注解的方式，定义了一个 Bean</span>
+<span class="hljs-meta">@Bean</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> User <span class="hljs-title">user</span><span class="hljs-params">()</span> </span>&#123;
+    User user = <span class="hljs-keyword">new</span> User();
+    user.setId(<span class="hljs-number">1L</span>);
+    user.setName(<span class="hljs-string">"John"</span>);
+    <span class="hljs-keyword">return</span> user;
+&#125;</code></pre>
+
+<p>然后，采用ApplicationContext :</p>
+<pre><code class="hljs java"><span class="hljs-comment">// 创建 ApplicationContext  容器</span>
+AnnotationConfigApplicationContext applicationContext = <span class="hljs-keyword">new</span> AnnotationConfigApplicationContext();
+<span class="hljs-comment">// 将当前类 AnnotationApplicationContextAsIoCContainerDemo 作为配置类（Configuration Class）</span>
+applicationContext.register(AnnotationApplicationContextAsIoCContainerDemo<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span>;
+<span class="hljs-comment">// 启动应用上下文</span>
+applicationContext.refresh();
+<span class="hljs-comment">// 依赖查找集合对象</span>
+lookupCollectionByType(applicationContext);
+<span class="hljs-comment">// 关闭应用上下文</span>
+applicationContext.close();</code></pre>
+
+<h2 id="Spring-IoC-容器生命周期"><a href="#Spring-IoC-容器生命周期" class="headerlink" title="Spring IoC 容器生命周期"></a>Spring IoC 容器生命周期</h2><p><strong>BeanFactory 是IoC 底层容器</strong><br><strong>FactoryBean 是创建Bean 的一种方式，帮助实现复杂的初始化逻辑</strong></p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Java/">Java</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Java/">Java</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Spring/">Spring</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning"><a rel="license noopener" href="http://creativecommons.org/licenses/by/4.0/" target="_blank"><img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" srcset="/img/loading.gif" /></a><br />This work is licensed under a <a rel="license noopener" href="http://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International License</a>.</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/04/20/Spring-Bean-Basic/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Spring Bean Basic</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2019/08/24/Angular-8-Content-Projection-Router-Pipe-and-Dependency-Injection%20copy/">
+                        <span class="hidden-mobile">Angular 8: Content Projection, Router, Pipe and Dependency Injection</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6TOC',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 2,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+  
+
+  
+    <!-- Google Analytics -->
+    <script defer>
+      (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function () {
+          (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+          m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+      })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+      ga('create', 'UA-165388199-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Spirng IOC Container&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 80,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

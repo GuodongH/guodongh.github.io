@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="Guodong">
+  <meta name="keywords" content="">
+  <title>Spring Bean Basic - Guodong&#39;s Code Journey</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Guodong's Code Journey</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/bean.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2020-04-20 19:24">
+                    April 20, 2020 7:24 PM
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    3k words
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    14
+                     minutes
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  Last updated: November 15, 2020 8:44 PM
+                
+              </p>
+            
+            <article class="markdown-body">
+              <!-- # Spring Bean 基础 -->
+
+
+
+<h2 id="定义Spring-Bean"><a href="#定义Spring-Bean" class="headerlink" title="定义Spring Bean"></a>定义Spring Bean</h2><p>BeanDefinition 是Spring Framework 中定义Bean 的配置元信息接口，包含：</p>
+<ul>
+<li>Bean 的类名</li>
+<li>Bean 行为配置元素，如作用域、自动绑定的模式，生命周期回调等</li>
+<li>其他Bean 引用，又可称作合作者（collaborators）或者依赖（dependencies）</li>
+<li>配置设置，比如Bean 属性（Properties）</li>
+</ul>
+<h2 id="BeanDefinition-元信息"><a href="#BeanDefinition-元信息" class="headerlink" title="BeanDefinition 元信息"></a>BeanDefinition 元信息</h2><table>
+<thead>
+<tr>
+<th align="left">属性（Property）</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Class</td>
+<td align="left">Bean 全类名，必须是具体类，不能用抽象类或接口</td>
+</tr>
+<tr>
+<td align="left">Name</td>
+<td align="left">Bean 的名称或者ID</td>
+</tr>
+<tr>
+<td align="left">Scope</td>
+<td align="left">Bean 的作用域（如：singleton、prototype 等）</td>
+</tr>
+<tr>
+<td align="left">Constructor arguments</td>
+<td align="left">Bean 构造器参数（用于依赖注入）</td>
+</tr>
+<tr>
+<td align="left">Properties</td>
+<td align="left">Bean 属性设置（用于依赖注入）</td>
+</tr>
+<tr>
+<td align="left">Autowiring mode</td>
+<td align="left">Bean 自动绑定模式（如：通过名称byName）</td>
+</tr>
+<tr>
+<td align="left">Lazy initialization mode</td>
+<td align="left">Bean 延迟初始化模式（延迟和非延迟）</td>
+</tr>
+<tr>
+<td align="left">Initialization method</td>
+<td align="left">Bean 初始化回调方法名称</td>
+</tr>
+<tr>
+<td align="left">Destruction method</td>
+<td align="left">Bean 销毁回调方法名称</td>
+</tr>
+</tbody></table>
+<h2 id="BeanDefinition的创建"><a href="#BeanDefinition的创建" class="headerlink" title="BeanDefinition的创建"></a>BeanDefinition的创建</h2><h3 id="通过-BeanDefinitionBuilder-构建"><a href="#通过-BeanDefinitionBuilder-构建" class="headerlink" title="通过 BeanDefinitionBuilder 构建"></a>通过 BeanDefinitionBuilder 构建</h3><pre><code class="hljs java">BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.genericBeanDefinition(User<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span>;
+<span class="hljs-comment">// 通过属性设置</span>
+beanDefinitionBuilder.addPropertyValue(<span class="hljs-string">"id"</span>, <span class="hljs-number">1</span>).addPropertyValue(<span class="hljs-string">"name"</span>, <span class="hljs-string">"John"</span>);
+<span class="hljs-comment">// 获取 BeanDefinition 实例</span>
+BeanDefinition beanDefinition = beanDefinitionBuilder.getBeanDefinition();
+<span class="hljs-comment">// BeanDefinition 并非 Bean 终态，可以自定义修改</span></code></pre>
+
+<h3 id="通过-AbstractBeanDefinition-以及派生类"><a href="#通过-AbstractBeanDefinition-以及派生类" class="headerlink" title="通过 AbstractBeanDefinition 以及派生类"></a>通过 AbstractBeanDefinition 以及派生类</h3><pre><code class="hljs java">GenericBeanDefinition genericBeanDefinition = <span class="hljs-keyword">new</span> GenericBeanDefinition();
+<span class="hljs-comment">// 设置 Bean 类型</span>
+genericBeanDefinition.setBeanClass(User<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span>;
+<span class="hljs-comment">// 通过 MutablePropertyValues 批量操作属性</span>
+MutablePropertyValues propertyValues = <span class="hljs-keyword">new</span> MutablePropertyValues();
+propertyValues.add(<span class="hljs-string">"id"</span>, <span class="hljs-number">1</span>).add(<span class="hljs-string">"name"</span>, <span class="hljs-string">"John"</span>);
+<span class="hljs-comment">// 通过 set MutablePropertyValues 批量操作属性</span>
+genericBeanDefinition.setPropertyValues(propertyValues);</code></pre>
+
+<h2 id="命名Spring-Bean"><a href="#命名Spring-Bean" class="headerlink" title="命名Spring Bean"></a>命名Spring Bean</h2><h3 id="Bean-的名称"><a href="#Bean-的名称" class="headerlink" title="Bean 的名称"></a>Bean 的名称</h3><p>每个Bean 拥有一个或多个标识符（identifiers），这些标识符在Bean 所在的容器必须是唯一的。通常，一个Bean 仅有一个标识符，如果需要额外的，可考虑使用别名（Alias）来扩充。</p>
+<p>在基于XML 的配置元信息（并不仅限于xml文件，包括其他方式来配置xml配置元信息）中，开发人员可用id 或者name 属性来规定Bean 的标识符。通常Bean 的标识符由字母组成，允许出现特殊字符。如果要想引入Bean 的别名的话，可在name 属性使用半角逗号（“,”）或分号（“;”) 来间隔。</p>
+<p>Bean 的id 或name 属性并非必须制定，如果留空的话，容器会为Bean 自动生成一个唯一的名称。Bean 的命名尽管没有限制，不过官方建议采用驼峰的方式，更符合Java 的命名约定。</p>
+<h3 id="Bean-名称生成器（BeanNameGenerator）"><a href="#Bean-名称生成器（BeanNameGenerator）" class="headerlink" title="Bean 名称生成器（BeanNameGenerator）"></a>Bean 名称生成器（BeanNameGenerator）</h3><p>由Spring Framework 2.0.3 引入，框架內建两种实现：</p>
+<ul>
+<li><p>DefaultBeanNameGenerator：默认通用BeanNameGenerator 实现；</p>
+</li>
+<li><p>AnnotationBeanNameGenerator：基于注解扫描的BeanNameGenerator 实现，起始于Spring Framework 2.5:</p>
+<p>With component scanning in the classpath, Spring generates bean names for unnamed components, following the rules described earlier: essentially, taking the simple class name and turning its initial character to lower-case. However, in the (unusual) special case when there is more than one character and both the first and second characters are upper case, the original casing gets preserved.<br>These are the same rules as defined by java.beans.Introspector.decapitalize (which Spring uses here).</p>
+</li>
+</ul>
+<h4 id="BeanNameGenerator"><a href="#BeanNameGenerator" class="headerlink" title="BeanNameGenerator"></a>BeanNameGenerator</h4><p>源代码<code>org.springframework.beans.factory.support.BeanNameGenerator</code>：</p>
+<pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">BeanNameGenerator</span> </span>&#123;
+	<span class="hljs-function">String <span class="hljs-title">generateBeanName</span><span class="hljs-params">(BeanDefinition definition, BeanDefinitionRegistry registry)</span></span>;
+&#125;</code></pre>
+
+<h4 id="DefaultBeanNameGenerator"><a href="#DefaultBeanNameGenerator" class="headerlink" title="DefaultBeanNameGenerator"></a>DefaultBeanNameGenerator</h4><p><code>org.springframework.beans.factory.support.DefaultBeanNameGenerator</code>:</p>
+<pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DefaultBeanNameGenerator</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">BeanNameGenerator</span> </span>&#123;
+	<span class="hljs-comment">// 共有API，要继承旧版本，因此构造函数必须为public</span>
+    <span class="hljs-comment">// 使用单例模式进行实现，以节约资源。</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> DefaultBeanNameGenerator INSTANCE = <span class="hljs-keyword">new</span> DefaultBeanNameGenerator();
+
+	<span class="hljs-meta">@Override</span>
+	<span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">generateBeanName</span><span class="hljs-params">(BeanDefinition definition, BeanDefinitionRegistry registry)</span> </span>&#123;
+		<span class="hljs-keyword">return</span> BeanDefinitionReaderUtils.generateBeanName(definition, registry);
+	&#125;
+&#125;</code></pre>
+
+<h2 id="Spring-Bean-的别名"><a href="#Spring-Bean-的别名" class="headerlink" title="Spring Bean 的别名"></a>Spring Bean 的别名</h2><h3 id="Bean-别名（Alias）的价值"><a href="#Bean-别名（Alias）的价值" class="headerlink" title="Bean 别名（Alias）的价值"></a>Bean 别名（Alias）的价值</h3><ul>
+<li><p>复用现有的BeanDefinition</p>
+</li>
+<li><p>更具有场景化的命名方法，比如：</p>
+<pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">alias</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"myApp-dataSource"</span> <span class="hljs-attr">alias</span>=<span class="hljs-string">"subsystemA-dataSource"</span>/&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">alias</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"myApp-dataSource"</span> <span class="hljs-attr">alias</span>=<span class="hljs-string">"subsystemB-dataSource"</span>/&gt;</span></code></pre>
+
+</li>
+</ul>
+<h4 id="代码讲解"><a href="#代码讲解" class="headerlink" title="代码讲解"></a>代码讲解</h4><h5 id="xml-配置"><a href="#xml-配置" class="headerlink" title="xml 配置"></a>xml 配置</h5><pre><code class="hljs xml"><span class="hljs-comment">&lt;!-- 导入第三方 Spring XML 配置文件 --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">import</span> <span class="hljs-attr">resource</span>=<span class="hljs-string">"classpath:/META-INF/dependency-lookup-context.xml"</span> /&gt;</span>
+
+<span class="hljs-comment">&lt;!-- 将 Spring 容器中 "user" Bean 关联/建立别名 - "xiaomage-user" --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">alias</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"user"</span> <span class="hljs-attr">alias</span>=<span class="hljs-string">"xiaomage-user"</span> /&gt;</span></code></pre>
+
+<h5 id="Java使用"><a href="#Java使用" class="headerlink" title="Java使用"></a>Java使用</h5><pre><code class="hljs java"><span class="hljs-comment">// 配置 XML 配置文件</span>
+<span class="hljs-comment">// 启动 Spring 应用上下文</span>
+BeanFactory beanFactory = <span class="hljs-keyword">new</span> ClassPathXmlApplicationContext(<span class="hljs-string">"classpath:/META-INF/bean-definitions-context.xml"</span>);
+<span class="hljs-comment">// 通过别名 xiaomage-user 获取曾用名 user 的 bean</span>
+User user = beanFactory.getBean(<span class="hljs-string">"user"</span>, User<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span>;
+User xiaomageUser = beanFactory.getBean(<span class="hljs-string">"xiaomage-user"</span>, User<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span>;
+System.out.println(<span class="hljs-string">"xiaomage-user 是否与 user Bean 相同："</span> + (user == xiaomageUser));</code></pre>
+
+<p>运行结果为</p>
+<pre><code class="hljs bash">xiaomage-user 是否与 user Bean 相同：<span class="hljs-literal">true</span></code></pre>
+
+
+
+<h2 id="注册Spring-Bean"><a href="#注册Spring-Bean" class="headerlink" title="注册Spring Bean"></a>注册Spring Bean</h2><p>  BeanDefinition 注册</p>
+<h3 id="XML-配置元信息"><a href="#XML-配置元信息" class="headerlink" title="XML 配置元信息"></a>XML 配置元信息</h3><p><code>&lt;bean name=”...” ... /&gt;</code></p>
+<h3 id="Java-注解配置元信息"><a href="#Java-注解配置元信息" class="headerlink" title="Java 注解配置元信息"></a>Java 注解配置元信息</h3><h4 id="Bean"><a href="#Bean" class="headerlink" title="@Bean"></a>@Bean</h4><h5 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h5><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Config</span> </span>&#123;
+    <span class="hljs-comment">// 1. 通过 @Bean 方式定义</span>
+    <span class="hljs-comment">// 通过 Java 注解的方式，定义了一个 Bean</span>
+    <span class="hljs-meta">@Bean</span>(name = &#123;<span class="hljs-string">"user"</span>, <span class="hljs-string">"xiaomage-user"</span>&#125;) <span class="hljs-comment">// Bean的 name 配置为可选项</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> User <span class="hljs-title">user</span><span class="hljs-params">()</span> </span>&#123;
+        User user = <span class="hljs-keyword">new</span> User();
+        user.setId(<span class="hljs-number">1L</span>);
+        user.setName(<span class="hljs-string">"John"</span>);
+        <span class="hljs-keyword">return</span> user;
+    &#125;
+&#125;</code></pre>
+
+<h4 id="Component"><a href="#Component" class="headerlink" title="@Component"></a>@Component</h4><h5 id="定义-1"><a href="#定义-1" class="headerlink" title="定义"></a>定义</h5><p>在Config类上增加<code>@Component</code>注解，定义当前类为Spring Bean（组件）</p>
+<pre><code class="hljs java"><span class="hljs-comment">// 2. 通过 @Component 方式</span>
+<span class="hljs-meta">@Component</span> <span class="hljs-comment">// 定义当前类作为 Spring Bean（组件）</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Config</span> </span>&#123;
+    <span class="hljs-comment">// 通过 Java 注解的方式，定义了一个 Bean</span>
+    <span class="hljs-meta">@Bean</span>(name = &#123;<span class="hljs-string">"user"</span>, <span class="hljs-string">"xiaomage-user"</span>&#125;) <span class="hljs-comment">// Bean的 name 配置为可选项</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> User <span class="hljs-title">user</span><span class="hljs-params">()</span> </span>&#123;
+        User user = <span class="hljs-keyword">new</span> User();
+        user.setId(<span class="hljs-number">1L</span>);
+        user.setName(<span class="hljs-string">"John"</span>);
+        <span class="hljs-keyword">return</span> user;
+    &#125;
+&#125;</code></pre>
+
+<h4 id="Import"><a href="#Import" class="headerlink" title="@Import"></a>@Import</h4><p>在主类上通过使用<code>@Import</code>进行引入。</p>
+<pre><code class="hljs java"><span class="hljs-comment">// 3. 通过 @Import 来进行导入</span>
+<span class="hljs-meta">@Import</span>(AnnotationBeanDefinitionDemo.Config<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span>
+<span class="hljs-class"><span class="hljs-title">public</span> <span class="hljs-title">class</span> <span class="hljs-title">AnnotationBeanDefinitionDemo</span> </span>&#123;
+    <span class="hljs-comment">// 省略内容……</span>
+&#125;</code></pre>
+
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>上述通过三种不同的方法定义了bean: <code>User</code>，<code>Config</code>和<code>Component</code>。那么，<code>Config</code>和<code>Component</code>都定义了bean，是否会生成不同的Bean呢？</p>
+<p>下面的代码可以显示<code>AnnotationBeanDefinitionDemo</code>， <code>Config</code>和<code>User</code>着三个Bean是否有重复注册。</p>
+<pre><code class="hljs java"><span class="hljs-comment">// 创建 BeanFactory 容器</span>
+AnnotationConfigApplicationContext applicationContext = <span class="hljs-keyword">new</span> AnnotationConfigApplicationContext();
+<span class="hljs-comment">// 注册 Configuration Class（配置类）</span>
+applicationContext.register(AnnotationBeanDefinitionDemo<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span>;
+
+<span class="hljs-comment">// 启动 Spring 应用上下文</span>
+applicationContext.refresh();
+
+<span class="hljs-comment">// 按照类型依赖查找</span>
+System.out.println(<span class="hljs-string">"Config 类型的所有 Beans： "</span> + applicationContext.getBeansOfType(Config<span class="hljs-class">.<span class="hljs-keyword">class</span>))</span>;
+System.out.println(<span class="hljs-string">"User 类型的所有 Beans： "</span> + applicationContext.getBeansOfType(User<span class="hljs-class">.<span class="hljs-keyword">class</span>))</span>;
+
+<span class="hljs-comment">// 显式地关闭 Spring 应用上下文</span>
+applicationContext.close();
+&#125;</code></pre>
+
+<p>输出结果为：</p>
+<pre><code class="hljs shell">Config 类型的所有 Beans： &#123;bean.definition.AnnotationBeanDefinitionDemo$Config=bean.definition.AnnotationBeanDefinitionDemo$Config@f6efaab&#125;
+User 类型的所有 Beans： &#123;user=User&#123;id=1, name='John'&#125;&#125;</code></pre>
+
+<p><strong>Config只有一个，User也只有一个。就是说，在Spring容器中，不会进行重复注册。</strong></p>
+<h3 id="Java-API-配置元信息"><a href="#Java-API-配置元信息" class="headerlink" title="Java API 配置元信息"></a>Java API 配置元信息</h3><h4 id="命名方式"><a href="#命名方式" class="headerlink" title="命名方式"></a>命名方式</h4><p> <code>BeanDefinitionRegistry#registerBeanDefinition(String,BeanDefinition)</code></p>
+<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">registerUserBeanDefinition</span><span class="hljs-params">(BeanDefinitionRegistry registry, String beanName)</span> </span>&#123;
+    BeanDefinitionBuilder beanDefinitionBuilder = genericBeanDefinition(User<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span>;
+    beanDefinitionBuilder
+        .addPropertyValue(<span class="hljs-string">"id"</span>, <span class="hljs-number">1L</span>)
+        .addPropertyValue(<span class="hljs-string">"name"</span>, <span class="hljs-string">"John"</span>);
+
+    <span class="hljs-comment">// 判断如果 beanName 参数存在时</span>
+    <span class="hljs-keyword">if</span> (StringUtils.hasText(beanName)) &#123;
+        <span class="hljs-comment">// 注册 BeanDefinition</span>
+        registry.registerBeanDefinition(beanName, beanDefinitionBuilder.getBeanDefinition());
+    &#125; <span class="hljs-keyword">else</span> &#123;
+        <span class="hljs-comment">// 非命名 Bean 注册方法</span>
+        BeanDefinitionReaderUtils.registerWithGeneratedName(beanDefinitionBuilder.getBeanDefinition(), registry);
+    &#125;
+&#125;</code></pre>
+
+<h4 id="非命名方式"><a href="#非命名方式" class="headerlink" title="非命名方式"></a>非命名方式</h4><p><code>BeanDefinitionReaderUtils#registerWithGeneratedName(AbstractBeanDefinition,Be
+anDefinitionRegistry)</code></p>
+<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">registerUserBeanDefinition</span><span class="hljs-params">(BeanDefinitionRegistry registry)</span> </span>&#123;
+    registerUserBeanDefinition(registry, <span class="hljs-keyword">null</span>);
+&#125;</code></pre>
+
+<h4 id="使用-1"><a href="#使用-1" class="headerlink" title="使用"></a>使用</h4><pre><code class="hljs java"><span class="hljs-comment">// 通过 BeanDefinition 注册 API 实现</span>
+<span class="hljs-comment">// 1.命名 Bean 的注册方式</span>
+registerUserBeanDefinition(applicationContext, <span class="hljs-string">"mercyblitz-user"</span>);
+<span class="hljs-comment">// 2. 非命名 Bean 的注册方法</span>
+registerUserBeanDefinition(applicationContext);</code></pre>
+
+<p><strong>命名 Bean 的注册方式</strong> 的输出为：</p>
+<pre><code class="hljs shell">User 类型的所有 Beans&#123;mercyblitz-user=User&#123;id=1, name='John'&#125;&#125;</code></pre>
+
+<p><strong>非命名 Bean 的注册方式</strong> 的输出为：</p>
+<pre><code class="hljs shell">User 类型的所有 Beans&#123;ioc.overview.domain.User#0=User&#123;id=1, name='John'&#125;&#125;</code></pre>
+
+<p>如果将上述3中方式一起使用，则输出为：</p>
+<pre><code class="hljs shell">User 类型的所有 Beans&#123;mercyblitz-user=User&#123;id=1, name='John'&#125;, ioc.overview.domain.User#0=User&#123;id=1, name='John'&#125;, user=User&#123;id=1, name='John'&#125;&#125;</code></pre>
+
+<h4 id="配置类方式"><a href="#配置类方式" class="headerlink" title="配置类方式"></a>配置类方式</h4><p> <code>AnnotatedBeanDefinitionReader#register(Class...)</code></p>
+<p>该方式之前已经使用过，代码为：</p>
+<pre><code class="hljs java"><span class="hljs-comment">// 注册 Configuration Class（配置类）</span>
+applicationContext.register(AnnotationBeanDefinitionDemo<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span>;</code></pre>
+
+<h2 id="实例化Spring-Bean-Bean-实例化（Instantiation）"><a href="#实例化Spring-Bean-Bean-实例化（Instantiation）" class="headerlink" title="实例化Spring Bean - Bean 实例化（Instantiation）"></a>实例化Spring Bean - Bean 实例化（Instantiation）</h2><h3 id="常规方式"><a href="#常规方式" class="headerlink" title="常规方式"></a>常规方式</h3><p>配置<code>META-INF/bean-instantiation-context.xml</code>：</p>
+<pre><code class="hljs xml"><span class="hljs-comment">&lt;!-- 静态方法实例化 Bean --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"user-by-static-method"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"ioc.overview.domain.User"</span> <span class="hljs-attr">factory-method</span>=<span class="hljs-string">"createUser"</span>/&gt;</span>
+
+<span class="hljs-comment">&lt;!-- 实例（Bean）方法实例化 Bean --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"user-by-instance-method"</span> <span class="hljs-attr">factory-bean</span>=<span class="hljs-string">"userFactory"</span> <span class="hljs-attr">factory-method</span>=<span class="hljs-string">"createUser"</span>/&gt;</span>
+
+<span class="hljs-comment">&lt;!-- FactoryBean实例化 Bean --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"user-by-factory-bean"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"bean.factory.UserFactoryBean"</span> /&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"userFactory"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"bean.factory.DefaultUserFactory"</span>/&gt;</span></code></pre>
+
+<pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DefaultUserFactory</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">UserFactory</span> </span>&#123;&#125;</code></pre>
+
+<h4 id="通过构造器"><a href="#通过构造器" class="headerlink" title="通过构造器"></a>通过构造器</h4><p>  包括带参构造器和不带参构造器。（配置元信息：XML、Java 注解和Java API ）</p>
+<h4 id="通过静态工厂方法"><a href="#通过静态工厂方法" class="headerlink" title="通过静态工厂方法"></a>通过静态工厂方法</h4><p>  采用类的静态方法。（配置元信息：XML 和Java API ）<br>  构造Domain 的User类，并加入静态方法：</p>
+<pre><code class="hljs java"><span class="hljs-meta">@Data</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">User</span> </span>&#123;
+    <span class="hljs-keyword">private</span> Long id;
+    <span class="hljs-keyword">private</span> String name;
+    
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> User <span class="hljs-title">createUser</span><span class="hljs-params">()</span> </span>&#123;
+        User user = <span class="hljs-keyword">new</span> User();
+        user.setId(<span class="hljs-number">1L</span>);
+        user.setName(<span class="hljs-string">"John"</span>);
+        <span class="hljs-keyword">return</span> user;
+    &#125;
+&#125;</code></pre>
+
+<p>使用该静态方法：</p>
+<pre><code class="hljs java"><span class="hljs-comment">// 配置 XML 配置文件</span>
+<span class="hljs-comment">// 启动 Spring 应用上下文</span>
+BeanFactory beanFactory = <span class="hljs-keyword">new</span> ClassPathXmlApplicationContext(<span class="hljs-string">"classpath:/META-INF/bean-instantiation-context.xml"</span>);
+User user = beanFactory.getBean(<span class="hljs-string">"user-by-static-method"</span>, User<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span>;
+System.out.println(user);</code></pre>
+<p>输出为：</p>
+<pre><code class="hljs shell">User&#123;id=1, name='John'&#125;</code></pre>
+
+<h4 id="通过Bean-工厂方法（很少采用）"><a href="#通过Bean-工厂方法（很少采用）" class="headerlink" title="通过Bean 工厂方法（很少采用）"></a>通过Bean 工厂方法（很少采用）</h4><p>   实例的工厂方法。抽象工厂模式。（配置元信息：XML和Java API ）</p>
+<p>构造抽象工厂类：</p>
+<pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">UserFactory</span> </span>&#123;
+    <span class="hljs-function"><span class="hljs-keyword">default</span> User <span class="hljs-title">createUser</span><span class="hljs-params">()</span> </span>&#123; <span class="hljs-keyword">return</span> User.createUser(); &#125;
+&#125;</code></pre>
+
+<p>然后构造工厂实现类，因为Interface中已经定义默认方法，所以<code>DefaultUserFactory</code>无需实现该方法：</p>
+<pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DefaultUserFactory</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">UserFactory</span> </span>&#123;&#125;</code></pre>
+
+<p>使用：</p>
+<pre><code class="hljs java">BeanFactory beanFactory = <span class="hljs-keyword">new</span> ClassPathXmlApplicationContext(<span class="hljs-string">"classpath:/META-INF/bean-instantiation-context.xml"</span>);
+User user = beanFactory.getBean(<span class="hljs-string">"user-by-static-method"</span>, User<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span>;
+User userByInstanceMethod = beanFactory.getBean(<span class="hljs-string">"user-by-instance-method"</span>, User<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span>;
+System.out.println(user);
+System.out.println(userByInstanceMethod);
+
+System.out.println(user == userByInstanceMethod);</code></pre>
+
+<p>输出为：</p>
+<pre><code class="hljs shell">User&#123;id=1, name='John'&#125;
+User&#123;id=1, name='John'&#125;
+flase</code></pre>
+
+<h4 id="通过FactoryBean"><a href="#通过FactoryBean" class="headerlink" title="通过FactoryBean"></a>通过<code>FactoryBean</code></h4><p>（配置元信息：XML、Java 注解和Java API ）</p>
+<p>Bean的FactoryBean实现：</p>
+<pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">UserFactoryBean</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">FactoryBean</span> </span>&#123;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Object <span class="hljs-title">getObject</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;
+        <span class="hljs-keyword">return</span> User.createUser();
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">public</span> Class&lt;?&gt; getObjectType() &#123;
+        <span class="hljs-keyword">return</span> User<span class="hljs-class">.<span class="hljs-keyword">class</span></span>;
+    &#125;
+&#125;</code></pre>
+
+<p>代码：</p>
+<pre><code class="hljs java"><span class="hljs-comment">// 配置 XML 配置文件</span>
+<span class="hljs-comment">// 启动 Spring 应用上下文</span>
+BeanFactory beanFactory = <span class="hljs-keyword">new</span> ClassPathXmlApplicationContext(<span class="hljs-string">"classpath:/META-INF/bean-instantiation-context.xml"</span>);
+User user = beanFactory.getBean(<span class="hljs-string">"user-by-static-method"</span>, User<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span>;
+User userByInstanceMethod = beanFactory.getBean(<span class="hljs-string">"user-by-instance-method"</span>, User<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span>;
+User userByFactoryBean = beanFactory.getBean(<span class="hljs-string">"user-by-factory-bean"</span>, User<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span>;
+System.out.println(user);
+System.out.println(userByInstanceMethod);
+System.out.println(userByFactoryBean);
+
+System.out.println(user == userByInstanceMethod);
+System.out.println(user == userByFactoryBean);
+System.out.println(userByInstanceMethod == userByFactoryBean);</code></pre>
+<p>输出为：</p>
+<pre><code class="hljs shell">User&#123;id=1, name='John'&#125;
+User&#123;id=1, name='John'&#125;
+User&#123;id=1, name='John'&#125;
+flase
+flase
+flase</code></pre>
+
+<h3 id="特殊方式"><a href="#特殊方式" class="headerlink" title="特殊方式"></a>特殊方式</h3><p>配置<code>META-INF/special-bean-instantiation-context.xml</code>：</p>
+<pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"userFactoryServiceLoader"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"org.springframework.beans.factory.serviceloader.ServiceLoaderFactoryBean"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"serviceType"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"bean.factory.UserFactory"</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">bean</span>&gt;</span></code></pre>
+
+<h4 id="通过ServiceLoaderFactoryBean"><a href="#通过ServiceLoaderFactoryBean" class="headerlink" title="通过ServiceLoaderFactoryBean"></a>通过<code>ServiceLoaderFactoryBean</code></h4><p>（配置元信息：XML、Java 注解和Java API ）</p>
+<p>创建文件<code>META-INF/services/bean.factory.UserFactory</code>，其中，<code>bean.factory.UserFactory</code>是实现类的全名字，该文件中包括了实现类的全名，如有多个，分多行写入。</p>
+<pre><code class="hljs java">BeanFactory beanfactory = <span class="hljs-keyword">new</span> ClassPathXmlApplicationContext(<span class="hljs-string">"classpath:/META-INF/special-bean-instantiation-context.xml"</span>);
+
+ServiceLoader&lt;UserFactory&gt; serviceLoader = beanfactory.getBean(<span class="hljs-string">"userFactoryServiceLoader"</span>, ServiceLoader<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span>;
+
+displayServiceLoader(serviceLoader);
+
+<span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">displayServiceLoader</span><span class="hljs-params">(ServiceLoader&lt;UserFactory&gt; serviceLoader)</span> </span>&#123;
+    Iterator&lt;UserFactory&gt; iterator = serviceLoader.iterator();
+    <span class="hljs-keyword">while</span> (iterator.hasNext()) &#123;
+        UserFactory userFactory = iterator.next();
+        System.out.println(userFactory.createUser());
+    &#125;
+&#125;</code></pre>
+
+<p>输出为：</p>
+<pre><code class="hljs shell">User&#123;id=1, name='John'&#125;</code></pre>
+
+<p>重构后代码为：</p>
+<pre><code class="hljs java"><span class="hljs-comment">// 配置 XML 配置文件</span>
+<span class="hljs-comment">// 启动 Spring 应用上下文</span>
+BeanFactory beanfactory = <span class="hljs-keyword">new</span> ClassPathXmlApplicationContext(<span class="hljs-string">"classpath:/META-INF/special-bean-instantiation-context.xml"</span>);
+
+ServiceLoader&lt;UserFactory&gt; serviceLoader = beanfactory.getBean(<span class="hljs-string">"userFactoryServiceLoader"</span>, ServiceLoader<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span>;
+
+demoServiceLoader();
+
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">demoServiceLoader</span><span class="hljs-params">()</span> </span>&#123;
+    ServiceLoader&lt;UserFactory&gt; serviceLoader = load(UserFactory<span class="hljs-class">.<span class="hljs-keyword">class</span>, <span class="hljs-title">Thread</span>.<span class="hljs-title">currentThread</span>().<span class="hljs-title">getContextClassLoader</span>())</span>;
+    displayServiceLoader(serviceLoader);
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">displayServiceLoader</span><span class="hljs-params">(ServiceLoader&lt;UserFactory&gt; serviceLoader)</span> </span>&#123;
+    Iterator&lt;UserFactory&gt; iterator = serviceLoader.iterator();
+    <span class="hljs-keyword">while</span> (iterator.hasNext()) &#123;
+        UserFactory userFactory = iterator.next();
+        System.out.println(userFactory.createUser());
+    &#125;
+&#125;</code></pre>
+
+<p>输出为：</p>
+<pre><code class="hljs shell">User&#123;id=1, name='John'&#125;</code></pre>
+
+<p>如有多个，则会依次输出所有的bean。</p>
+<h4 id="通过AutowireCapableBeanFactory-createBean-java-lang-Class-int-boolean"><a href="#通过AutowireCapableBeanFactory-createBean-java-lang-Class-int-boolean" class="headerlink" title="通过AutowireCapableBeanFactory#createBean(java.lang.Class, int, boolean)"></a>通过<code>AutowireCapableBeanFactory#createBean(java.lang.Class, int, boolean)</code></h4><p>通过 ApplicationContext 获取 AutowireCapableBeanFactory:</p>
+<pre><code class="hljs java">ApplicationContext applicationContext = <span class="hljs-keyword">new</span> ClassPathXmlApplicationContext(<span class="hljs-string">"classpath:/META-INF/special-bean-instantiation-context.xml"</span>);
+<span class="hljs-comment">// 通过 ApplicationContext 获取 AutowireCapableBeanFactory</span>
+AutowireCapableBeanFactory beanFactory = applicationContext.getAutowireCapableBeanFactory();
+
+ServiceLoader&lt;UserFactory&gt; serviceLoader = beanFactory.getBean(<span class="hljs-string">"userFactoryServiceLoader"</span>, ServiceLoader<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span>;
+
+displayServiceLoader(serviceLoader);
+
+<span class="hljs-comment">// 创建 UserFactory 对象，通过 AutowireCapableBeanFactory</span>
+UserFactory userFactory = beanFactory.createBean(DefaultUserFactory<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span>;
+System.out.println(userFactory.createUser());</code></pre>
+
+<p>输出为：</p>
+<pre><code class="hljs shell">User&#123;id=1, name='John'&#125; // displayServiceLoader 输出
+User&#123;id=1, name='John'&#125; // System.out.println(userFactory.createUser()) 输出</code></pre>
+
+
+
+<h4 id="通过BeanDefinitionRegistry-registerBeanDefinition-String-BeanDefinition"><a href="#通过BeanDefinitionRegistry-registerBeanDefinition-String-BeanDefinition" class="headerlink" title="通过BeanDefinitionRegistry#registerBeanDefinition(String,BeanDefinition)"></a>通过<code>BeanDefinitionRegistry#registerBeanDefinition(String,BeanDefinition)</code></h4><h2 id="初始化Spring-Bean-Initialization"><a href="#初始化Spring-Bean-Initialization" class="headerlink" title="初始化Spring Bean (Initialization)"></a>初始化Spring Bean (Initialization)</h2><h3 id="PostConstruct标注方法"><a href="#PostConstruct标注方法" class="headerlink" title="@PostConstruct标注方法"></a>@PostConstruct标注方法</h3><p>在具体类中加入<code>@PostConstruct</code>标注</p>
+<pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DefaultUserFactory</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">UserFactory</span> </span>&#123;
+    <span class="hljs-comment">// 1. 基于 @PostConstruct 注解</span>
+    <span class="hljs-meta">@PostConstruct</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">init</span><span class="hljs-params">()</span> </span>&#123;
+        System.out.println(<span class="hljs-string">"@PostConstruct : UserFactory 初始化中..."</span>);
+    &#125;    
+&#125;</code></pre>
+
+<p>运行：</p>
+<pre><code class="hljs java"><span class="hljs-meta">@Configuration</span> <span class="hljs-comment">// Configuration Class</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BeanInitializationDemo</span> </span>&#123;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;
+        <span class="hljs-comment">// 创建 BeanFactory 容器</span>
+        AnnotationConfigApplicationContext applicationContext = <span class="hljs-keyword">new</span> AnnotationConfigApplicationContext();
+        <span class="hljs-comment">// 注册 Configuration Class（配置类）</span>
+        applicationContext.register(BeanInitializationDemo<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span>;
+        <span class="hljs-comment">// 启动 Spring 应用上下文</span>
+        applicationContext.refresh();
+        <span class="hljs-comment">// 依赖查找 UserFactory</span>
+        UserFactory userFactory = applicationContext.getBean(UserFactory<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span>;
+        <span class="hljs-comment">// 关闭 Spring 应用上下文</span>
+        applicationContext.close();
+    &#125;
+
+    <span class="hljs-meta">@Bean</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> UserFactory <span class="hljs-title">userFactory</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> DefaultUserFactory();
+    &#125;
+&#125;</code></pre>
+
+<p>输出为：</p>
+<pre><code class="hljs shell">@PostConstruct : UserFactory 初始化中...</code></pre>
+
+<h3 id="实现InitializingBean接口的-afterPropertiesSet-方法"><a href="#实现InitializingBean接口的-afterPropertiesSet-方法" class="headerlink" title="实现InitializingBean接口的 afterPropertiesSet()方法"></a>实现<code>InitializingBean</code>接口的 <code>afterPropertiesSet()</code>方法</h3><p>在具体类中：</p>
+<pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DefaultUserFactory</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">UserFactory</span>, <span class="hljs-title">InitializingBean</span> </span>&#123;
+
+    <span class="hljs-comment">// 1. 基于 @PostConstruct 注解</span>
+    <span class="hljs-meta">@PostConstruct</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">init</span><span class="hljs-params">()</span> </span>&#123;
+        System.out.println(<span class="hljs-string">"@PostConstruct : UserFactory 初始化中..."</span>);
+    &#125;
+   
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">afterPropertiesSet</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;
+        System.out.println(<span class="hljs-string">"InitializingBean#afterPropertiesSet() : UserFactory 初始化中..."</span>);
+    &#125;
+&#125;</code></pre>
+
+<p>输出为：</p>
+<pre><code class="hljs she">@PostConstruct : UserFactory 初始化中...
+InitializingBean#afterPropertiesSet() : UserFactory 初始化中...</code></pre>
+
+
+
+<h3 id="自定义初始化方法"><a href="#自定义初始化方法" class="headerlink" title="自定义初始化方法"></a>自定义初始化方法</h3><h4 id="使用Java注解-Bean-initMethod-quot-quot"><a href="#使用Java注解-Bean-initMethod-quot-quot" class="headerlink" title="使用Java注解@Bean(initMethod=&quot; &quot;)"></a>使用Java注解<code>@Bean(initMethod=&quot; &quot;)</code></h4><pre><code class="hljs java"><span class="hljs-meta">@Bean</span>(initMethod = <span class="hljs-string">"initUserFactory"</span>, destroyMethod = <span class="hljs-string">"doDestroy"</span>)
+<span class="hljs-meta">@Lazy</span>(value = <span class="hljs-keyword">false</span>)
+<span class="hljs-function"><span class="hljs-keyword">public</span> UserFactory <span class="hljs-title">userFactory</span><span class="hljs-params">()</span> </span>&#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> DefaultUserFactory();
+&#125;</code></pre>
+
+<pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DefaultUserFactory</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">UserFactory</span>, <span class="hljs-title">InitializingBean</span> </span>&#123;
+
+    <span class="hljs-meta">@PostConstruct</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">init</span><span class="hljs-params">()</span> </span>&#123;
+        System.out.println(<span class="hljs-string">"@PostConstruct : UserFactory 初始化中..."</span>);
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">initUserFactory</span><span class="hljs-params">()</span> </span>&#123;
+        System.out.println(<span class="hljs-string">"自定义初始化方法 initUserFactory() : UserFactory 初始化中..."</span>);
+    &#125;  
+        
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">afterPropertiesSet</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;
+        System.out.println(<span class="hljs-string">"InitializingBean#afterPropertiesSet() : UserFactory 初始化中..."</span>);
+    &#125;
+&#125;</code></pre>
+
+<p>输出为：</p>
+<pre><code class="hljs shell">@PostConstruct : UserFactory 初始化中...
+<span class="hljs-meta">InitializingBean#</span><span class="bash">afterPropertiesSet() : UserFactory 初始化中...</span>
+自定义初始化方法 initUserFactory() : UserFactory 初始化中...</code></pre>
+
+<h4 id="使用Java-API-AbstractBeanDefinition-setInitMethodName-String"><a href="#使用Java-API-AbstractBeanDefinition-setInitMethodName-String" class="headerlink" title="使用Java API AbstractBeanDefinition#setInitMethodName(String)"></a>使用Java API <code>AbstractBeanDefinition#setInitMethodName(String)</code></h4>
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Java/">Java</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Java/">Java</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Spring/">Spring</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning"><a rel="license noopener" href="http://creativecommons.org/licenses/by/4.0/" target="_blank"><img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" srcset="/img/loading.gif" /></a><br />This work is licensed under a <a rel="license noopener" href="http://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International License</a>.</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2020/04/19/Spirng-IOC-Container/">
+                        <span class="hidden-mobile">Spirng IOC Container</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6TOC',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 2,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+  
+
+  
+    <!-- Google Analytics -->
+    <script defer>
+      (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function () {
+          (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+          m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+      })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+      ga('create', 'UA-165388199-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Spring Bean Basic&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 80,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

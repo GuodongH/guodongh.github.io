@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="Guodong">
+  <meta name="keywords" content="">
+  <title>Angular 8: Content Projection, Router, Pipe and Dependency Injection - Guodong&#39;s Code Journey</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Guodong's Code Journey</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/angular.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2019-08-24 16:02">
+                    August 24, 2019 4:02 PM
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    2.2k words
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    14
+                     minutes
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  Last updated: November 15, 2020 8:44 PM
+                
+              </p>
+            
+            <article class="markdown-body">
+              <!-- # Angular 8: Content Projection, Router, Pipe and Dependency Injection -->
+
+<p>Angular 8 Demo Project Log and Experience Part 4.</p>
+<h2 id="Issue-about-Component-nesting"><a href="#Issue-about-Component-nesting" class="headerlink" title="Issue about Component nesting"></a>Issue about Component nesting</h2><p>Component nesting is inevitable. Think about the structure:</p>
+<ul>
+<li><p>AppComponent</p>
+<ul>
+<li>ChildComponent<ul>
+<li>GrandComponent<ul>
+<li>GrandGrandComponent</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>We can use <code>@Input()</code> and <code>@Output</code> to realize the data transfer between nesting components or between components and outside world. </p>
+<p>However, if we need to transfer between <code>AppComponent</code> and <code>GrandGrandComponent</code>, we need to transfer the data or event in two middle components too.</p>
+<p>This over nesting can lead to complexity and redundancy in our codes.</p>
+<p>To avoid the redundant data and events brought by component nesting, we can use </p>
+<ul>
+<li>content projection </li>
+<li>router </li>
+<li>directive </li>
+<li>service</li>
+</ul>
+</li>
+</ul>
+<h2 id="Content-Projection"><a href="#Content-Projection" class="headerlink" title="Content Projection"></a>Content Projection</h2><p>Using <code>ng-content</code>to realize content projection.</p>
+<ul>
+<li>what: dynamic content</li>
+<li>syntax: <code>&lt;ng-content select=&quot;style classes / HTML tags / directives&quot;&gt;&lt;/ng-content&gt;</code></li>
+<li>possible scenarios: <ul>
+<li>display dynamic contents </li>
+<li>as a component container</li>
+</ul>
+</li>
+</ul>
+<p>Previously we just call the ChildComponent in AppComponent, such as </p>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">app-scrollable-tab</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">app-scrollable-tab</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">app-image-slider</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">app-image-slider</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">app-horizontal-grid</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">app-horizontal-grid</span>&gt;</span></code></pre>
+<p>In <code>horizontal-grid.component.html</code>, we display the content as follow:</p>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">appGridItem</span> *<span class="hljs-attr">ngFor</span>=<span class="hljs-string">"let item of channels"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">img</span></span>
+<span class="hljs-tag">    [<span class="hljs-attr">src</span>]=<span class="hljs-string">"item.icon"</span></span>
+<span class="hljs-tag">    <span class="hljs-attr">alt</span>=<span class="hljs-string">""</span></span>
+<span class="hljs-tag">    [<span class="hljs-attr">appGridItemImage</span>]=<span class="hljs-string">"'2rem'"</span></span>
+<span class="hljs-tag">     /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">appGridItemTitle</span>=<span class="hljs-string">"0.6rem"</span>&gt;</span>&#123;&#123; item.title &#125;&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></code></pre>
+
+<p>This is the normal way to use components.</p>
+<h3 id="Refactor-to-ng-content"><a href="#Refactor-to-ng-content" class="headerlink" title="Refactor to ng-content"></a>Refactor to <code>ng-content</code></h3><p>We now change the <code>horizontal-grid.component.html</code> to the code:</p>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">ng-content</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ng-content</span>&gt;</span></code></pre>
+<p>then, change the <code>app.component.html</code> to modify the <code>app-horizontal-grid</code>, just simply move the code from <code>horizontal-grid.component.html</code>, we also need to change some css or imports.</p>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">app-horizontal-grid</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">appGridItem</span> *<span class="hljs-attr">ngFor</span>=<span class="hljs-string">"let item of channels"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">img</span></span>
+<span class="hljs-tag">    [<span class="hljs-attr">src</span>]=<span class="hljs-string">"item.icon"</span></span>
+<span class="hljs-tag">    <span class="hljs-attr">alt</span>=<span class="hljs-string">""</span></span>
+<span class="hljs-tag">    [<span class="hljs-attr">appGridItemImage</span>]=<span class="hljs-string">"'2rem'"</span></span>
+<span class="hljs-tag">     /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">appGridItemTitle</span>=<span class="hljs-string">"0.6rem"</span>&gt;</span>&#123;&#123; item.title &#125;&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">app-horizontal-grid</span>&gt;</span></code></pre>
+
+<p>Thus, the <strong>Content Projection</strong> DONE.</p>
+<p>We can also use some syntax:</p>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">ng-content</span> <span class="hljs-attr">select</span>=<span class="hljs-string">"span"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ng-content</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">ng-content</span> <span class="hljs-attr">select</span>=<span class="hljs-string">".special"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ng-content</span>&gt;</span> <span class="hljs-comment">&lt;!-- special is class name --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">ng-content</span> <span class="hljs-attr">select</span>=<span class="hljs-string">"[appGridItem]"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ng-content</span>&gt;</span></code></pre>
+
+<h2 id="Router"><a href="#Router" class="headerlink" title="Router"></a>Router</h2><p>Routes includes:</p>
+<ul>
+<li>path</li>
+<li>component</li>
+<li>child router</li>
+</ul>
+<h3 id="Router-to-Home-Page"><a href="#Router-to-Home-Page" class="headerlink" title="Router to Home Page"></a>Router to Home Page</h3><p>The best practice is to create individual file to deal with the routes.</p>
+<p>Create <code>app-routing.module.ts</code>:</p>
+<pre><code class="hljs ts"><span class="hljs-keyword">import</span> &#123; NgModule &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">'@angular/core'</span>;
+<span class="hljs-keyword">import</span> &#123; RouterModule, Routes &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">'@angular/router'</span>;
+<span class="hljs-keyword">import</span> &#123; HomeContainerComponent &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">'./home'</span>;
+
+<span class="hljs-keyword">const</span> routes: Routes = [
+  &#123; path: <span class="hljs-string">''</span>, component: HomeContainerComponent &#125;
+];
+
+<span class="hljs-meta">@NgModule</span>(&#123;
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+&#125;)
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> AppRoutingModule &#123;&#125;</code></pre>
+
+<p>Each Route maps a URL path to a component. There are <strong>no leading slashes(/)</strong> in the path. The router parses and builds the final URL for you, allowing you to use both relative and absolute paths when navigating between application views.</p>
+<p>In <code>app.component.html</code> add  <code>&lt;router-outlet&gt;&lt;/router-outlet&gt;</code>. Then, import <code>AppRoutingModule</code> and <code>HomeModule</code> in <code>app.module.ts</code>.</p>
+<h3 id="Child-Router-in-Home-Page"><a href="#Child-Router-in-Home-Page" class="headerlink" title="Child Router in Home Page"></a>Child Router in Home Page</h3><p>Create a child router in the home page as follows. In  <code>home-routing.module.ts</code>,</p>
+<pre><code class="hljs ts"><span class="hljs-keyword">const</span> routes: Routes = [
+  &#123;
+    path: <span class="hljs-string">'home'</span>,
+    component: HomeContainerComponent,
+    children: [
+      &#123; path: <span class="hljs-string">''</span>, redirectTo: <span class="hljs-string">'hot'</span>, pathMatch: <span class="hljs-string">'full'</span> &#125;,
+      &#123; path: <span class="hljs-string">':tabLink'</span>, component: HomeDetailComponent &#125;
+    ]
+  &#125;
+];
+
+<span class="hljs-meta">@NgModule</span>(&#123;
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
+&#125;)
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> HomeRoutingModule &#123;&#125;</code></pre>
+
+<p>Beware we use <strong><code>RouterModule.forChild(routes)</code></strong>.</p>
+<p>When we visit the path like <code>localhost:4200/home/</code>, it will redirectTo <code>hot</code>.</p>
+<p>The <code>:tabLink</code> in the second route is a token for a route parameter. In a URL such as <code>/home/toy</code>, “toy” is the value of the id parameter. The corresponding HomeDetailComponent will use that value to find and present the content whose id is toy.</p>
+<p>In <code>home-container.component.html</code>, we also need to remove the following code:</p>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">app-image-slider</span> [<span class="hljs-attr">sliders</span>]=<span class="hljs-string">"imagesSliders"</span> #<span class="hljs-attr">imageSlider</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">app-image-slider</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">app-horizontal-grid</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">appGridItem</span> *<span class="hljs-attr">ngFor</span>=<span class="hljs-string">"let item of channels"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">appGridItemImage</span>=<span class="hljs-string">"2rem"</span> [<span class="hljs-attr">src</span>]=<span class="hljs-string">"item.icon"</span> <span class="hljs-attr">alt</span>=<span class="hljs-string">""</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">appGridItemTitle</span>=<span class="hljs-string">"1rem"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"title"</span>&gt;</span>&#123;&#123; item.title &#125;&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">app-horizontal-grid</span>&gt;</span></code></pre>
+
+<p>and add <code>&lt;router-outlet&gt;&lt;/router-outlet&gt;</code>.</p>
+<p>Because all contents will display in <code>HomeDetailComponent</code>, we need to move the removed code to <code>home-container.component.html</code>.</p>
+<h3 id="Params-in-Router-URL"><a href="#Params-in-Router-URL" class="headerlink" title="Params in Router URL"></a>Params in Router URL</h3><h4 id="config"><a href="#config" class="headerlink" title="config"></a>config</h4><pre><code class="hljs ts">&#123; path: <span class="hljs-string">':tabLink'</span>, component: HomeDetailComponent &#125;</code></pre>
+
+<h3 id="Activation"><a href="#Activation" class="headerlink" title="Activation"></a>Activation</h3><p>Two way to activate the router. </p>
+<p>The <code>tab.link</code> means the <code>link</code> property in interface <code>tab</code>;</p>
+<h4 id="use-routerLink-in-template-html-file"><a href="#use-routerLink-in-template-html-file" class="headerlink" title="use routerLink in template(html file)."></a>use routerLink in template(html file).</h4><pre><code class="hljs html"><span class="hljs-comment">&lt;!-- single param --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">a</span> [<span class="hljs-attr">routerLink</span>=<span class="hljs-string">"['/home', tab.link]"</span>]&gt;</span>...<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+
+<span class="hljs-comment">&lt;!-- the params can also carry multi  key-value pairs--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">a</span> [<span class="hljs-attr">routerLink</span>=<span class="hljs-string">"['/home', tab.link, &#123;name: 'val1'&#125;]"</span>]&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+
+<span class="hljs-comment">&lt;!-- the params can also carry query params --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">a</span> [<span class="hljs-attr">routerLink</span>=<span class="hljs-string">"['/home', tab.link, [queryParams]=&#123;name: 'val1'&#125;]"</span>]&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span></code></pre>
+
+<h4 id="handle-the-event-in-ts-file"><a href="#handle-the-event-in-ts-file" class="headerlink" title="handle the event in ts file"></a>handle the event in ts file</h4><pre><code class="hljs ts"><span class="hljs-comment">// single param </span>
+<span class="hljs-keyword">this</span>.router.navigate([<span class="hljs-string">'home'</span>, tab.link]);
+
+<span class="hljs-comment">// the params can also carry multi key-value pairs</span>
+<span class="hljs-keyword">this</span>.router.navigate([<span class="hljs-string">'home'</span>, tab.link, &#123;name: <span class="hljs-string">'val1'</span>&#125;]);
+
+<span class="hljs-comment">// the params can also carry query params</span>
+<span class="hljs-keyword">this</span>.router.navigate([<span class="hljs-string">'home'</span>, tab.link, &#123;queryParams: &#123;name: <span class="hljs-string">'val1'</span>&#125;&#125;]);</code></pre>
+
+<h3 id="Corresponding-URL"><a href="#Corresponding-URL" class="headerlink" title="Corresponding URL"></a>Corresponding URL</h3><ul>
+<li><code>http://localhost:4200/home/sports</code></li>
+<li>with key-value pairs: <code>http://localhost:4200/home/sports;name=val1</code></li>
+<li>with query params: <code>http://localhost:4200/home/sports?name=val1</code></li>
+</ul>
+<h3 id="Read-Params-in-URL"><a href="#Read-Params-in-URL" class="headerlink" title="Read Params in URL"></a>Read Params in URL</h3><pre><code class="hljs ts"><span class="hljs-comment">// with or without key-value pair params</span>
+<span class="hljs-keyword">this</span>.route.paramsMap.subscribe(<span class="hljs-function"><span class="hljs-params">param</span> =&gt;</span> &#123;...&#125;);
+
+<span class="hljs-comment">// with query params</span>
+<span class="hljs-keyword">this</span>.route.queryParamsMap.subscribe(<span class="hljs-function"><span class="hljs-params">param</span> =&gt;</span> &#123;...&#125;);</code></pre>
+
+<h3 id="Router-code-sample"><a href="#Router-code-sample" class="headerlink" title="Router code sample"></a>Router code sample</h3><p>In <code>home-container.component.html</code>, we use <code>app-scrollable-tab</code> component.</p>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">app-scrollable-tab</span></span>
+<span class="hljs-tag">  [<span class="hljs-attr">menus</span>]=<span class="hljs-string">"topMenus"</span></span>
+<span class="hljs-tag">  (<span class="hljs-attr">tabSelected</span>)=<span class="hljs-string">"handleTabSelected($event)"</span></span>
+<span class="hljs-tag">  [<span class="hljs-attr">backgroundColor</span>]=<span class="hljs-string">"'#fff'"</span></span>
+<span class="hljs-tag">  <span class="hljs-attr">titleColor</span>=<span class="hljs-string">"#3f3f3f"</span></span>
+<span class="hljs-tag">  <span class="hljs-attr">titleActiveColor</span>=<span class="hljs-string">"red"</span></span>
+<span class="hljs-tag">  <span class="hljs-attr">indicatorColor</span>=<span class="hljs-string">"red"</span></span>
+<span class="hljs-tag">&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">app-scrollable-tab</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">router-outlet</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">router-outlet</span>&gt;</span></code></pre>
+<p>In <code>HomeContainerComponent</code>, we have a function to navigate the router:</p>
+<pre><code class="hljs ts"><span class="hljs-keyword">constructor</span>(<span class="hljs-params"><span class="hljs-keyword">private</span> router: Router</span>) &#123;&#125;
+handleTabSelected(topMenu: TopMenu) &#123;
+  <span class="hljs-keyword">this</span>.router.navigate([<span class="hljs-string">'home'</span>, topMenu.link]);
+&#125;</code></pre>
+
+<p>Modify the <code>HomeDetailComponent</code> html:</p>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> *<span class="hljs-attr">ngIf</span>=<span class="hljs-string">"selectedTabLink === 'hot'; else other"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">app-image-slider</span> [<span class="hljs-attr">sliders</span>]=<span class="hljs-string">"imagesSliders"</span> #<span class="hljs-attr">imageSlider</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">app-image-slider</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">app-horizontal-grid</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">appGridItem</span> *<span class="hljs-attr">ngFor</span>=<span class="hljs-string">"let item of channels"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">appGridItemImage</span>=<span class="hljs-string">"2rem"</span> [<span class="hljs-attr">src</span>]=<span class="hljs-string">"item.icon"</span> <span class="hljs-attr">alt</span>=<span class="hljs-string">""</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">appGridItemTitle</span>=<span class="hljs-string">"1rem"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"title"</span>&gt;</span>&#123;&#123; item.title &#125;&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">app-horizontal-grid</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">ng-template</span> #<span class="hljs-attr">other</span>&gt;</span>
+  Other works
+<span class="hljs-tag">&lt;/<span class="hljs-name">ng-template</span>&gt;</span></code></pre>
+
+<p>In ts file:</p>
+<pre><code class="hljs ts"><span class="hljs-comment">// get the ActivatedRoute</span>
+<span class="hljs-keyword">constructor</span>(<span class="hljs-params"><span class="hljs-keyword">private</span> route: ActivatedRoute</span>) &#123;&#125;
+
+  ngOnInit() &#123;
+    <span class="hljs-keyword">this</span>.route.paramMap.subscribe(<span class="hljs-function"><span class="hljs-params">params</span> =&gt;</span> &#123;
+      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'path params: '</span>, params);
+      <span class="hljs-keyword">this</span>.selectedTabLink = params.get(<span class="hljs-string">'tabLink'</span>);
+    &#125;);
+    <span class="hljs-keyword">this</span>.route.queryParamMap.subscribe(<span class="hljs-function"><span class="hljs-params">params</span> =&gt;</span> &#123;
+      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'query params: '</span>, params);
+    &#125;);
+  &#125;</code></pre>
+
+<p>The console output is:</p>
+<img src="/2019/08/24/Angular-8-Content-Projection-Router-Pipe-and-Dependency-Injection/router-query-params.png" srcset="/img/loading.gif" class="" title="Angular router query-params">
+
+<br/>
+We can have many `router-outlet`, but only one can without name, others must have name.
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">a</span></span>
+<span class="hljs-tag">  [<span class="hljs-attr">routerLink</span>]=<span class="hljs-string">"['grand']"</span></span>
+<span class="hljs-tag">  <span class="hljs-attr">routerLinkActive</span>=<span class="hljs-string">"active"</span></span>
+<span class="hljs-tag">  [<span class="hljs-attr">queryParams</span>]=<span class="hljs-string">"&#123; name: 'Joe', gender: 'male' &#125;"</span></span>
+<span class="hljs-tag">  &gt;</span>link to grand<span class="hljs-tag">&lt;/<span class="hljs-name">a</span></span>
+<span class="hljs-tag">&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">a</span> [<span class="hljs-attr">routerLink</span>]=<span class="hljs-string">"[&#123; outlets: &#123; second: ['aux'] &#125; &#125;]"</span>&gt;</span>link to second<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">router-outlet</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">router-outlet</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">router-outlet</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"second"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">router-outlet</span>&gt;</span></code></pre>
+
+<pre><code class="hljs ts">&#123;
+  path: <span class="hljs-string">':tabLink'</span>,
+  component: HomeDetailComponent,
+  children: [
+    &#123; path: <span class="hljs-string">'aux'</span>, component: HomeAuxComponent, outlet: <span class="hljs-string">'second'</span> &#125;,
+    &#123; path: <span class="hljs-string">'grand'</span>, component: HomeGrandComponent &#125;
+  ]
+&#125;</code></pre>
+
+<h2 id="Pipe"><a href="#Pipe" class="headerlink" title="Pipe"></a>Pipe</h2><p>The detail about pipe can see <a href="https://angular.io/guide/pipes" target="_blank" rel="noopener">https://angular.io/guide/pipes</a>.</p>
+<h3 id="Chaining-pipes"><a href="#Chaining-pipes" class="headerlink" title="Chaining pipes"></a>Chaining pipes</h3><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>The chained hero's birthday is
+&#123;&#123; birthday | date | uppercase&#125;&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
+
+<h3 id="Custom-pipes"><a href="#Custom-pipes" class="headerlink" title="Custom pipes"></a>Custom pipes</h3><p>See <a href="https://angular.cn/guide/pipes#custom-pipes" target="_blank" rel="noopener">https://angular.cn/guide/pipes#custom-pipes</a>.</p>
+<pre><code class="hljs ts"><span class="hljs-keyword">import</span> &#123; Pipe, PipeTransform &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">'@angular/core'</span>;
+
+<span class="hljs-meta">@Pipe</span>(&#123;name: <span class="hljs-string">'appAgo'</span>&#125;)
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> AgoPipe <span class="hljs-keyword">implements</span> PipeTransform &#123;
+  transform(value: <span class="hljs-built_in">any</span>): <span class="hljs-built_in">any</span> &#123;
+    <span class="hljs-keyword">if</span> (value) &#123;
+      <span class="hljs-keyword">const</span> seconds = <span class="hljs-built_in">Math</span>.floor((+<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span> - +<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(value)) / <span class="hljs-number">1000</span>);
+      <span class="hljs-keyword">if</span> (seconds &lt; <span class="hljs-number">30</span>) &#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'A few seconds ago'</span>;
+      &#125;
+
+      <span class="hljs-keyword">const</span> intervals = &#123;
+        years: <span class="hljs-number">3600</span> * <span class="hljs-number">24</span> * <span class="hljs-number">365</span>,
+        months: <span class="hljs-number">3600</span> * <span class="hljs-number">24</span> * <span class="hljs-number">30</span>,
+        weeks: <span class="hljs-number">3600</span> * <span class="hljs-number">24</span> * <span class="hljs-number">7</span>,
+        days: <span class="hljs-number">3600</span> * <span class="hljs-number">24</span>,
+        hours: <span class="hljs-number">3600</span>,
+        minutes: <span class="hljs-number">60</span>,
+        secondes: <span class="hljs-number">1</span>
+      &#125;;
+
+      <span class="hljs-keyword">let</span> counter = <span class="hljs-number">0</span>;
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> unitName <span class="hljs-keyword">in</span> intervals) &#123;
+        <span class="hljs-keyword">if</span> (intervals.hasOwnProperty(unitName)) &#123;
+          <span class="hljs-keyword">const</span> unitValue = intervals[unitName];  
+          counter = <span class="hljs-built_in">Math</span>.floor(seconds / unitValue);
+          <span class="hljs-keyword">if</span> (counter &gt; <span class="hljs-number">0</span>) &#123;
+            <span class="hljs-keyword">return</span> <span class="hljs-string">`<span class="hljs-subst">$&#123;counter&#125;</span> <span class="hljs-subst">$&#123;unitName&#125;</span> ago`</span>;
+          &#125;           
+        &#125;
+      &#125;
+    &#125;
+
+    <span class="hljs-keyword">return</span> value;
+  &#125;
+&#125;</code></pre>
+
+<p>Use the Custom pipes:</p>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span> &#123;\&#123; date | agoPipe &#125;&#125; <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></code></pre>
+
+<pre><code class="hljs ts"><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> HomeGrandComponent <span class="hljs-keyword">implements</span> OnInit &#123;
+  date: <span class="hljs-built_in">Date</span>;
+
+  <span class="hljs-keyword">constructor</span>(<span class="hljs-params"></span>) &#123; &#125;
+  
+  ngOnInit() &#123;
+    <span class="hljs-keyword">this</span>.date = <span class="hljs-keyword">this</span>.minusDays(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(), <span class="hljs-number">60</span>);
+  &#125;
+
+  minusDays(date: <span class="hljs-built_in">Date</span>, days: <span class="hljs-built_in">number</span>) &#123;
+    <span class="hljs-keyword">const</span> result = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(date);
+    result.setDate(result.getDate() - days);
+    <span class="hljs-keyword">return</span> result;
+  &#125;
+
+&#125;</code></pre>
+
+<h2 id="Dependency-Injection"><a href="#Dependency-Injection" class="headerlink" title="Dependency Injection"></a>Dependency Injection</h2><h3 id="What-is-DI"><a href="#What-is-DI" class="headerlink" title="What is DI?"></a>What is DI?</h3><img src="/2019/08/24/Angular-8-Content-Projection-Router-Pipe-and-Dependency-Injection/DI.png" srcset="/img/loading.gif" class="" title="Angular Dependency Injection">
+
+
+<br/>
+The instance created through DI is **singleton**. If component A and component B both inject a service, they are  using **the same instance**.
+
+<p>In angular, if we want to make some class injectable, we just need to add decorator <code>@Injectable()</code> above that class. </p>
+<pre><code class="hljs ts"><span class="hljs-meta">@Injectable</span>()
+<span class="hljs-keyword">class</span> Product &#123;
+  <span class="hljs-keyword">constructor</span>(<span class="hljs-params"><span class="hljs-keyword">private</span> name: <span class="hljs-built_in">string</span>, <span class="hljs-keyword">private</span> color: <span class="hljs-built_in">string</span></span>) &#123;&#125;
+  <span class="hljs-comment">// the above line combine the field declaration and constructor together.</span>
+&#125;
+
+<span class="hljs-meta">@Injectable</span>()
+<span class="hljs-keyword">class</span> PurchaseOrder &#123;
+  <span class="hljs-keyword">private</span> amount: <span class="hljs-built_in">number</span>;
+  <span class="hljs-keyword">constructor</span>(<span class="hljs-params"><span class="hljs-keyword">private</span> product: Product</span>) &#123;&#125;
+&#125;</code></pre>
+
+<p>Use it in complex way:</p>
+<pre><code class="hljs ts">ngOnInit() &#123;
+  <span class="hljs-keyword">this</span>.price = <span class="hljs-number">1234.56</span>;
+  <span class="hljs-keyword">const</span> injector = Injector.create(&#123;
+    providers: [
+      &#123;
+        provide: Product,
+        <span class="hljs-comment">//useClass: Product // inject a class</span>
+        <span class="hljs-comment">// or we can directly inject a specific object using useFactory</span>
+        useFactory: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> &#123;
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Product(<span class="hljs-string">'Phone'</span>, <span class="hljs-string">'black'</span>);
+        &#125;,
+        deps: [] 
+      &#125;,
+      &#123;
+        provide: PurchaseOrder,
+        useClass: PurchaseOrder,
+        deps: [Product]
+      &#125;
+    ]
+  &#125;);
+  <span class="hljs-built_in">console</span>.log(injector.get(Product));
+  <span class="hljs-built_in">console</span>.log(injector.get(PurchaseOrder));
+&#125;</code></pre>
+
+<p>  Actually, we don’t need to use the complex way. The easy way is:</p>
+<ol>
+<li>add <code>@Injectable()</code> to the class</li>
+<li>add <code>providers</code> in <code>module.ts</code><ul>
+<li>if it is <code>useClass</code>, just add the class in the <code>providers</code> array: <code>providers: [PurchaseOrder]</code></li>
+</ul>
+</li>
+</ol>
+<h3 id="Service"><a href="#Service" class="headerlink" title="Service"></a>Service</h3><p>The best practice is to create service for each module to do the data transfer job. Thus, to decouple data and components. Create a home service and see how to use DI to decouple data and our components.</p>
+<p>Create <code>home.service.ts</code>:</p>
+<pre><code class="hljs ts"><span class="hljs-keyword">import</span> &#123; Injectable &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">'@angular/core'</span>;
+<span class="hljs-keyword">import</span> &#123; TopMenu, ImageSlider, Channel &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">'src/app/shared/components'</span>;
+
+<span class="hljs-meta">@Injectable</span>()
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> HomeService &#123;
+  menus: TopMenu[] = [...];
+
+  imageSliders: ImageSlider[] = [...];
+  
+  getTabs() &#123; <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.menus; &#125;
+
+  getBanners() &#123; <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.imageSliders; &#125;
+
+  getChannels() &#123; <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.channels; &#125;
+&#125;</code></pre>
+
+<p>In <code>HomeContainerComponent</code>:</p>
+<pre><code class="hljs ts"><span class="hljs-keyword">constructor</span>(<span class="hljs-params"></span>
+<span class="hljs-params">   <span class="hljs-keyword">private</span> router: Router,</span>
+<span class="hljs-params">   <span class="hljs-keyword">private</span> service: HomeService,</span>
+<span class="hljs-params">   <span class="hljs-meta">@Inject</span>(token) <span class="hljs-keyword">private</span> baseUrl: <span class="hljs-built_in">string</span></span>
+<span class="hljs-params"> </span>) &#123;&#125;
+
+ ngOnInit() &#123;
+   <span class="hljs-keyword">this</span>.topMenus = <span class="hljs-keyword">this</span>.service.getTabs();
+ &#125;</code></pre>
+
+<p>  In <code>HomeDetailComponent</code>:<br>  <pre><code class="hljs ts"> <span class="hljs-keyword">constructor</span>(<span class="hljs-params"><span class="hljs-keyword">private</span> route: ActivatedRoute, <span class="hljs-keyword">private</span> service: HomeService</span>) &#123;&#125;
+
+ngOnInit() &#123;
+  <span class="hljs-comment">// ..</span>
+  <span class="hljs-keyword">this</span>.imagesSliders = <span class="hljs-keyword">this</span>.service.getSliders();
+  <span class="hljs-keyword">this</span>.channels = <span class="hljs-keyword">this</span>.service.getChannels();
+&#125;</code></pre></p>
+<p>  MUST declare this service in <code>.module.ts</code>.<br>  <pre><code class="hljs ts">  <span class="hljs-meta">@NgModule</span>(&#123;
+  declarations: [...],
+  providers: [HomeService],
+  imports: [...]
+&#125;)</code></pre></p>
+<h3 id="transfer-a-string-value"><a href="#transfer-a-string-value" class="headerlink" title="transfer a string value"></a>transfer a string value</h3><p>We can also just transfer a value using DI.</p>
+<pre><code class="hljs ts">ngOnInit() &#123;
+  <span class="hljs-keyword">const</span> injector = <span class="hljs-keyword">new</span> Injector.create(&#123;
+    providers: [&#123;
+      &#123;
+        provider: <span class="hljs-string">'baseUrl'</span>,
+        useValue: <span class="hljs-string">'http://localhost'</span>
+      &#125;
+    &#125;]
+  &#125;)	
+&#125;</code></pre>
+
+<p>We can use a string ‘baseUrl’ to be the indicator of a injectable value, however in large project this may cause conflict. So Angular wants us to use Token as the string type indicator.</p>
+<pre><code class="hljs ts"><span class="hljs-keyword">const</span> token = <span class="hljs-keyword">new</span> InjectionToken&lt;<span class="hljs-built_in">string</span>&gt;(<span class="hljs-string">'baseUrl'</span>);
+<span class="hljs-keyword">const</span> injector = <span class="hljs-keyword">new</span> Injector.create(&#123;
+  providers: [&#123;
+    &#123;
+      provide: token,
+      useValue: <span class="hljs-string">'http://localhost'</span>
+    &#125;
+  &#125;]
+&#125;)</code></pre>
+
+<h3 id="DI-a-string-to-other-components"><a href="#DI-a-string-to-other-components" class="headerlink" title="DI a string to other components"></a>DI a string to other components</h3><ol>
+<li>export it and declare in <code>.module.ts</code>.<pre><code class="hljs ts"><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> token = <span class="hljs-keyword">new</span> InjectionToken&lt;<span class="hljs-built_in">string</span>&gt;(<span class="hljs-string">'baseUrl'</span>);</code></pre>
+
+</li>
+</ol>
+<pre><code class="hljs ts">providers: [HomeService, &#123; provide: token, useValue: <span class="hljs-string">'http://localhost'</span> &#125;]</code></pre>
+
+<ol start="2">
+<li>use it with <code>@Inject(token)</code><pre><code class="hljs ts"><span class="hljs-keyword">constructor</span>(<span class="hljs-params"></span>
+<span class="hljs-params">  <span class="hljs-meta">@Inject</span>(token) <span class="hljs-keyword">private</span> baseUrl: <span class="hljs-built_in">string</span></span>
+<span class="hljs-params"></span>) &#123;&#125;</code></pre>
+
+</li>
+</ol>
+<h3 id="New-Injectable-syntax"><a href="#New-Injectable-syntax" class="headerlink" title="New @Injectable() syntax"></a>New <code>@Injectable()</code> syntax</h3><p>Add the decorator at the beginning of the service</p>
+<pre><code class="hljs ts"><span class="hljs-meta">@Injectable</span>(&#123;
+  providedIn: <span class="hljs-string">'root'</span>
+&#125;)
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> HomeService&#123;&#125;</code></pre>
+<p>Thus, we <strong>DO NOT</strong> need to add this service in <code>providers</code> array in the <code>.module.ts</code> .</p>
+<h2 id="Dirty-Check-Change-Detection"><a href="#Dirty-Check-Change-Detection" class="headerlink" title="Dirty Check (Change Detection)"></a>Dirty Check (Change Detection)</h2><ul>
+<li>What? view is refreshed when the data is changed.</li>
+<li>When? when Dirty Check is triggered?<ul>
+<li>browser events (e.g. click, mouseover, keyup,… )</li>
+<li>setTimeout() and setInterval()</li>
+<li>HTTP request</li>
+</ul>
+</li>
+<li>How? Compare current status and new status.</li>
+</ul>
+<p>The Dirty Check (Change Detection) procedure is synchronous. And it is done twice by Angular framework.</p>
+<img src="/2019/08/24/Angular-8-Content-Projection-Router-Pipe-and-Dependency-Injection/dirty-check.png" srcset="/img/loading.gif" class="" title="Angular dirty check">
+
+<p> Dirty Check (Change Detection) done before <code>AfterViewChecked</code> and <code>AfterViewInit</code> hook, so we should change property values in functions <code>ngAfterViewChecked()</code> and <code>ngAfterViewInit()</code>. </p>
+<p> 子组件的所有的行为依赖于其自己定义的 @Input 属性。 而这个 @Input 属性是父组件在用。换言之，父组件的通过设置 @Input 属性，从而控制了子组件的所有行为。子组件并没有可以控制自己行为的方法。子组件所有的状态，都依赖于父组件的控制。子组件成为一个笨组件。==》 最佳实践：使用该方式，通过onPush策略。</p>
+<p> The child component’s status is relay on parent component.</p>
+<p> Change Detection done before <code>AfterViewChecked</code> and <code>AfterViewInit</code> hook, so we should change property values in functions <code>ngAfterViewChecked()</code> and <code>ngAfterViewInit()</code>. </p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Angular/">Angular</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Angular/">Angular</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning"><a rel="license noopener" href="http://creativecommons.org/licenses/by/4.0/" target="_blank"><img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" srcset="/img/loading.gif" /></a><br />This work is licensed under a <a rel="license noopener" href="http://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International License</a>.</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/08/24/Angular-8-Content-Projection-Router-Pipe-and-Dependency-Injection%20copy/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Angular 8: Content Projection, Router, Pipe and Dependency Injection</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2019/08/23/Angular-8-Decorator-Directiveand-and-Style-Binding-Event-Binding/">
+                        <span class="hidden-mobile">Angular 8: Decorator, Directiveand and Style Binding/Event Binding</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6TOC',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 2,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+  
+
+  
+    <!-- Google Analytics -->
+    <script defer>
+      (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function () {
+          (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+          m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+      })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+      ga('create', 'UA-165388199-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Angular 8: Content Projection, Router, Pipe and Dependency Injection&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 80,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
